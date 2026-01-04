@@ -1,24 +1,28 @@
 ﻿using System;
 
-namespace ThisConstructor
+namespace TypeCasting
 {
-    class WaterHeater
+    class Mammal
     {
-        protected int temperature;
-
-        public void SetTemperature(int temperature)
+        public void nurse()
         {
-            if(temperature < -5 || temperature > 42)
-            {
-                throw new Exception("Out of temperature range");
-            }
-
-            this.temperature = temperature;
+            Console.WriteLine("Nurse()");
         }
+    }
 
-        internal void TurnOnWater()
+    class dog : Mammal
+    {
+        public void bark()
         {
-            Console.WriteLine($"Turn on water : {this.temperature}");
+            Console.WriteLine("Bark()");
+        }
+    }
+
+    class cat : Mammal
+    {
+        public void meow()
+        {
+            Console.WriteLine("Meow()");
         }
     }
 
@@ -26,22 +30,31 @@ namespace ThisConstructor
     {
         static void Main(string[] args)
         {
-            try
+            Mammal mammal = new dog();
+            dog ddog;
+
+            if(mammal is dog)
             {
-                WaterHeater heater = new WaterHeater();
-                heater.SetTemperature(20);
-                heater.TurnOnWater();
-
-                heater.SetTemperature(-2);
-                heater.TurnOnWater();
-
-                heater.SetTemperature(50);
-                heater.TurnOnWater();
-                //git test
+                ddog = (dog)mammal;
+                ddog.bark();
             }
-                catch(Exception e)
+
+            Mammal mammal2 = new cat();
+
+            cat cat2 = mammal2 as cat;
+            if(cat2 !=null)
             {
-                Console.WriteLine(e.Message);
+                cat2.meow();
+            }
+
+            cat cat3 = mammal as cat;
+            if(cat3 != null)
+            {
+                cat3.meow();
+            }
+            else
+            {
+                Console.WriteLine("Cat3 is not a cat");
             }
         }
     }
