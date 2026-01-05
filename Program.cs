@@ -34,7 +34,7 @@ namespace Override
     {
         static void Main(string[] args)
         {
-            console
+            //console
         }
     }
 
