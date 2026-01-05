@@ -1,61 +1,41 @@
 ﻿using System;
 
-namespace TypeCasting
+namespace Override
 {
-    class Mammal
+    class ArmorSuites
     {
-        public void nurse()
+        public virtual void Initialize()
         {
-            Console.WriteLine("Nurse()");
+            Console.WriteLine("Armored");
         }
     }
 
-    class dog : Mammal
+    class IronMan : ArmorSuites
     {
-        public void bark()
+        public override void Initialize()
         {
-            Console.WriteLine("Bark()");
+            base.Initialize();
+            Console.WriteLine("Repulsor Rays Armed");
         }
     }
 
-    class cat : Mammal
+    class WarMachine : ArmorSuites
     {
-        public void meow()
+        public override void Initialize()
         {
-            Console.WriteLine("Meow()");
+            base.Initialize();
+            Console.WriteLine("double");
+            Console.WriteLine("rocket");
         }
     }
+
 
     class MainApp
     {
         static void Main(string[] args)
         {
-            Mammal mammal = new dog();
-            dog ddog;
-
-            if(mammal is dog)
-            {
-                ddog = (dog)mammal;
-                ddog.bark();
-            }
-
-            Mammal mammal2 = new cat();
-
-            cat cat2 = mammal2 as cat;
-            if(cat2 !=null)
-            {
-                cat2.meow();
-            }
-
-            cat cat3 = mammal as cat;
-            if(cat3 != null)
-            {
-                cat3.meow();
-            }
-            else
-            {
-                Console.WriteLine("Cat3 is not a cat");
-            }
+            console
         }
     }
+
 }
