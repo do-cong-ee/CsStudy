@@ -1,61 +1,28 @@
 ﻿using System;
 
-namespace TypeCasting
+namespace PartialClass
 {
-    class Mammal
+    partial class MyClass
     {
-        public void nurse()
-        {
-            Console.WriteLine("Nurse()");
-        }
+        public void Mathod1() { Console.WriteLine("Mathod1"); }
+        public void Mathod2() { Console.WriteLine("Mathod2"); }
+        public void Mathod3() { Console.WriteLine("Mathod3"); }
     }
 
-    class dog : Mammal
+
+    partial class MyClass
     {
-        public void bark()
-        {
-            Console.WriteLine("Bark()");
-        }
+        public void Mathod4() { Console.WriteLine("Mathod4"); }
+        public void Mathod5() { Console.WriteLine("Mathod5"); }
+        public void Mathod6() { Console.WriteLine("Mathod6"); }
     }
 
-    class cat : Mammal
-    {
-        public void meow()
-        {
-            Console.WriteLine("Meow()");
-        }
-    }
 
     class MainApp
     {
         static void Main(string[] args)
         {
-            Mammal mammal = new dog();
-            dog ddog;
 
-            if(mammal is dog)
-            {
-                ddog = (dog)mammal;
-                ddog.bark();
-            }
-
-            Mammal mammal2 = new cat();
-
-            cat cat2 = mammal2 as cat;
-            if(cat2 !=null)
-            {
-                cat2.meow();
-            }
-
-            cat cat3 = mammal as cat;
-            if(cat3 != null)
-            {
-                cat3.meow();
-            }
-            else
-            {
-                Console.WriteLine("Cat3 is not a cat");
-            }
         }
     }
 }
