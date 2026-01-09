@@ -1,28 +1,35 @@
 ﻿using System;
+using System.IO;
 
 namespace IInterface
 {
-    interface IExInterFace
+    interface ILogger
     {
-        void WriteLog(string message);
+        void WriteLog(string path);
     }
 
-    class ConsoleLogger : IExInterFace
+    class FileLogger : ILogger
     {
-        public void WriteLog(string message)
+        private StreamWriter writer;
+
+        public FileLogger(string path)
         {
-            Console.WriteLine("{0}, {1}", DateTime.Now.ToLocalTime(), message);
+            writer = File.CreateText(path);
+            writer.AutoFlush = true;
+        }
+
+        public void WriteLog(string path)
+        {
+            writer.WriteLine("{0}, {1}", DateTime.Now.ToShortTimeString(), path);
         }
     }
+
 
     class MainApp
     {
         static void Main(string[] args)
         {
-            IExInterFace logger = new ConsoleLogger();
-            logger.WriteLog("김깝심");
-
-            return;
+          
         }
     }
 }
