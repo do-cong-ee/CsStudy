@@ -1,28 +1,17 @@
 ﻿using System;
 
-namespace TypeCasting
+namespace IInterface
 {
-    class Mammal
+    interface IExInterFace
     {
-        public void nurse()
-        {
-            Console.WriteLine("Nurse()");
-        }
+        void WriteLog(string message);
     }
 
-    class dog : Mammal
+    class ConsoleLogger : IExInterFace
     {
-        public void bark()
+        public void WriteLog(string message)
         {
-            Console.WriteLine("Bark()");
-        }
-    }
-
-    class cat : Mammal
-    {
-        public void meow()
-        {
-            Console.WriteLine("Meow()");
+            Console.WriteLine("{0}, {1}", DateTime.Now.ToLocalTime(), message);
         }
     }
 
@@ -30,32 +19,10 @@ namespace TypeCasting
     {
         static void Main(string[] args)
         {
-            Mammal mammal = new dog();
-            dog ddog;
+            IExInterFace logger = new ConsoleLogger();
+            logger.WriteLog("김깝심");
 
-            if(mammal is dog)
-            {
-                ddog = (dog)mammal;
-                ddog.bark();
-            }
-
-            Mammal mammal2 = new cat();
-
-            cat cat2 = mammal2 as cat;
-            if(cat2 !=null)
-            {
-                cat2.meow();
-            }
-
-            cat cat3 = mammal as cat;
-            if(cat3 != null)
-            {
-                cat3.meow();
-            }
-            else
-            {
-                Console.WriteLine("Cat3 is not a cat");
-            }
+            return;
         }
     }
 }
