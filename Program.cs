@@ -8,7 +8,15 @@ namespace IInterface
         void WriteLog(string path);
     }
 
-    class FileLogger : ILogger
+    class ConsoleLogger :ILogger
+    {
+        public void WriteLog(string Message)
+        {
+            Console.WriteLine("{0} {1}", DateTime.Now.ToLocalTime(), Message);
+        }
+    }
+
+    class FileLogger :ILogger
     {
         private StreamWriter writer;
 
@@ -18,9 +26,33 @@ namespace IInterface
             writer.AutoFlush = true;
         }
 
-        public void WriteLog(string path)
+        public void WriteLog(string message)
         {
-            writer.WriteLine("{0}, {1}", DateTime.Now.ToShortTimeString(), path);
+            writer.WriteLine("{0} {1}", DateTime.Now.ToShortTimeString(), message);
+        }
+    }
+
+    class ClimateMonitor
+    {
+        private ILogger logger;
+        public ClimateMonitor(ILogger logger)
+        {
+            this.logger = logger;
+        }
+
+        public void start()
+        {
+            while(true)
+            {
+                Console.WriteLine("온도를 입력해주세요. :");
+                string temperature = Console.ReadLine();
+                if(temperature == "")
+                {
+                    break;
+                }
+
+                logger.WriteLog("현재 온도 :" + temperature);
+            }
         }
     }
 
@@ -29,7 +61,7 @@ namespace IInterface
     {
         static void Main(string[] args)
         {
-          
+
         }
     }
 }
