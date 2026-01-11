@@ -8,11 +8,30 @@ namespace IInterface
         void WriteLog(string path);
     }
 
+    interface IFormattableLogger : ILogger
+    {
+        void WriteLog(string format, params Object[] args);
+    }
+
     class ConsoleLogger :ILogger
     {
         public void WriteLog(string Message)
         {
             Console.WriteLine("{0} {1}", DateTime.Now.ToLocalTime(), Message);
+        }
+    }
+
+    class ConsoleLogger2 : IFormattableLogger
+    {
+        public void WriteLog(string message)
+        {
+            Console.WriteLine("{0} {1}", DateTime.Now.ToLocalTime(), message);
+        }
+
+        public void WriteLog(string format, params Object[] args)
+        {
+            String message = String.Format(format, args);
+            Console.WriteLine("{0} {1}", DateTime.Now.ToLocalTime(), message);
         }
     }
 
