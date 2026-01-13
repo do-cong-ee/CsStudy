@@ -40,9 +40,14 @@ namespace Property
                 Amount = 3000
             };
 
+            Transaction tr4 = tr3 with { To = "꺼억이" };
+            Transaction tr5 = tr4 with { From = "뿡뿡이" };
+
             Console.WriteLine(tr1);
             Console.WriteLine(tr2);
             Console.WriteLine(tr3);
+            Console.WriteLine(tr4);
+            Console.WriteLine(tr5);
 
             return;
 
