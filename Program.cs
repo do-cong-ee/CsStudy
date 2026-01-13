@@ -19,15 +19,11 @@ namespace Property
     {
         static void Main(string[] args)
         {
-            BirthdayInfo birth = new BirthdayInfo();
-            birth.Name = "쿠우";
-            birth.Birthday = new DateTime(2009, 12, 04);
-
-            Console.WriteLine($"Name : {birth.Name}");
-            Console.WriteLine($"Birth day : {birth.Birthday.ToShortDateString()}");
-            Console.WriteLine($"Age : {birth.Age}");
-
-            return;
+            BirthdayInfo birth = new BirthdayInfo()
+            {
+                Name = "춘식이대식이",
+                Birthday = new DateTime(1991, 6, 28)
+            };
         }
     }
 }
