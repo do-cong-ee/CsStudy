@@ -1,28 +1,42 @@
 ﻿using System;
 
-namespace TypeCasting
+namespace Property
 {
-    class Mammal
+    class BirthdayInfo
     {
-        public void nurse()
-        {
-            Console.WriteLine("Nurse()");
-        }
-    }
+        private string name;
+        private DateTime birthday;
 
-    class dog : Mammal
-    {
-        public void bark()
+        public string Name
         {
-            Console.WriteLine("Bark()");
+            get
+            {
+                return this.name;
+            }
+            set
+            {
+                this.name = value;
+            }
         }
-    }
 
-    class cat : Mammal
-    {
-        public void meow()
+        public DateTime BirthDay
         {
-            Console.WriteLine("Meow()");
+            get
+            {
+                return this.birthday;
+            }
+            set
+            {
+                this.birthday = value;
+            }
+        }
+
+        public int Age
+        {
+            get
+            {
+                return new DateTime(DateTime.Now.Subtract(birthday).Ticks).Year;
+            }
         }
     }
 
@@ -30,32 +44,15 @@ namespace TypeCasting
     {
         static void Main(string[] args)
         {
-            Mammal mammal = new dog();
-            dog ddog;
+            BirthdayInfo birth = new BirthdayInfo();
+            birth.Name = "쿠우";
+            birth.BirthDay = new DateTime(2009, 12, 04);
 
-            if(mammal is dog)
-            {
-                ddog = (dog)mammal;
-                ddog.bark();
-            }
+            Console.WriteLine($"Name : {birth.Name}");
+            Console.WriteLine($"Birth day : {birth.BirthDay.ToShortDateString()}");
+            Console.WriteLine($"Age : {birth.Age}");
 
-            Mammal mammal2 = new cat();
-
-            cat cat2 = mammal2 as cat;
-            if(cat2 !=null)
-            {
-                cat2.meow();
-            }
-
-            cat cat3 = mammal as cat;
-            if(cat3 != null)
-            {
-                cat3.meow();
-            }
-            else
-            {
-                Console.WriteLine("Cat3 is not a cat");
-            }
+            return;
         }
     }
 }
