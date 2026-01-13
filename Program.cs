@@ -2,7 +2,10 @@
 
 namespace Property
 {
-   public class Transaction
+   record Transaction
+    // public class 대신 record 를 쓴다.. 왜?
+    // 레코드는 참조형식이면서 비교할때는 값형식처럼 쓸 수 있어서...
+    // 참조형식 -> 빨라 값형식 ->느려,,, 빠르면서 비교쉽게? 
     {
         public string From { get; init;}
         public string To { get; init; }
