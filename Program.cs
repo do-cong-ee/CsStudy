@@ -2,28 +2,47 @@
 
 namespace Property
 {
-    class BirthdayInfo
+   public class Transaction
     {
-        public string Name { get; set; } = "Unknown";
-        public DateTime Birthday { get; set; } = new DateTime(1, 1, 1);
-        public int Age
-        {
-            get
-            {
-                return new DateTime(DateTime.Now.Subtract(Birthday).Ticks).Year;
-            }
-        }
+        public string From { get; init;}
+        public string To { get; init; }
+        public int Amount { get; init;}
+        //초기화 전용 자동 구현 프로퍼티
 
+        public override string ToString()
+        {
+            return $"{From,10} -> {To,10} : ${Amount}";
+        }
     }
     class MainApp
     {
         static void Main(string[] args)
         {
-            BirthdayInfo birth = new BirthdayInfo()
+            Transaction tr1 = new Transaction
             {
-                Name = "춘식이대식이",
-                Birthday = new DateTime(1991, 6, 28)
+                From = "춘식이",
+                To = "대식이",
+                Amount = 1000
             };
+            Transaction tr2 = new Transaction
+            {
+                From = "개똥이",
+                To = "말똥이",
+                Amount = 2000
+            };
+            Transaction tr3 = new Transaction
+            {
+                From = "얼렁이",
+                To = "뚱땅이",
+                Amount = 3000
+            };
+
+            Console.WriteLine(tr1);
+            Console.WriteLine(tr2);
+            Console.WriteLine(tr3);
+
+            return;
+
         }
     }
 }
