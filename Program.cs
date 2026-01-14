@@ -6,17 +6,9 @@ namespace ArraySample2
     {
         static void Main(string[] args)
         {
-            int[] scores = new int[5];
-            scores[0] = 10;
-            scores[1] = 20;
-            scores[2] = 30;
-            scores[^2] = 40;
-            scores[^1] = 50;
-
-            foreach (int score in scores)
-            {
-                Console.WriteLine(score);
-            }
+            int[] array = new int[3] { 1, 2, 3 };
+            Console.WriteLine($"Type of Array : {array.GetType()}");
+            Console.WriteLine($"Base Type Of array : {array.GetType().BaseType}");
 
 
         }
