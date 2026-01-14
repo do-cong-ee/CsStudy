@@ -1,41 +1,37 @@
 ﻿using System;
 
-namespace ArraySample2
+namespace _2DArray
 {
     class MainApp
     {
-        static void PrintArray(System.Array array)
-        {
-            foreach (var e in array)
-                Console.Write(e);
-            Console.WriteLine();
-        }
-
         static void Main(string[] args)
         {
-            char[] array = new char[26];
-            for(int i=0;i<array.Length;i++)
+            int[,] arr = new int[2, 3] { { 1, 2, 3 }, { 4, 5, 6 } };
+
+            for(int i=0;i<arr.GetLength(0);i++)
             {
-                array[i] = (char)('A' + i);
+                for(int j=0;j<arr.GetLength(1);j++)
+                {
+                    Console.Write($"[{i}, {j}] : {arr[i, j]}");
+                }
+                Console.WriteLine();
             }
+            Console.WriteLine();
 
-            PrintArray(array[..]);
-            PrintArray(array[3..]);
-            PrintArray(array[..16]);
-            PrintArray(array[0..4]);
+            int[,] arr2 = new int[,] { { 1, 2, 3 }, { 4, 5, 6 } };
 
-            System.Range range_5_10 = 5..10;
-            PrintArray(array[range_5_10]);
+            for (int i = 0; i < arr2.GetLength(0); i++)
+            {
+                for (int j = 0; j < arr2.GetLength(1); j++)
+                {
+                    Console.Write($"[{i}, {j}] : {arr2[i, j]}");
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine();
 
-            System.Index last = ^0;
-            System.Range range_5_last = 5..last;
-            PrintArray(array[range_5_last]);
-
-            PrintArray(array[^4..^1]);
-
-            return;
+            int[,] arr3 = { { 1, 2, 3 }, { 4, 5, 6 } };
         }
-
-        
     }
 }
+
