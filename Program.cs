@@ -4,42 +4,38 @@ namespace ArraySample2
 {
     class MainApp
     {
-        private static bool CheckPassed(int score)
+        static void PrintArray(System.Array array)
         {
-            return score >= 60;
-        }
-        private static void Print(int value)
-        {
-            Console.Write($"{value} ");
+            foreach (var e in array)
+                Console.Write(e);
+            Console.WriteLine();
         }
 
         static void Main(string[] args)
         {
-            int[] scores = new int[] { 80, 74, 81, 90, 34 };
-            foreach (int score in scores)
-                Console.Write($"{score}");
-            Console.WriteLine();
+            char[] array = new char[26];
+            for(int i=0;i<array.Length;i++)
+            {
+                array[i] = (char)('A' + i);
+            }
 
-            Array.Sort(scores);
-            // 정렬하는 함수
-            Array.ForEach<int>(scores, new Action<int>(Print));
-            // 각각의 요소에 작업을 시행함
-            Console.WriteLine();
+            PrintArray(array[..]);
+            PrintArray(array[3..]);
+            PrintArray(array[..16]);
+            PrintArray(array[0..4]);
 
-            Console.WriteLine($"Number of Dimensions : {scores.Rank}");
+            System.Range range_5_10 = 5..10;
+            PrintArray(array[range_5_10]);
 
-            Console.WriteLine($"Binary Search : 81 is at " + $"{Array.BinarySearch<int>(scores, 81)}");
+            System.Index last = ^0;
+            System.Range range_5_last = 5..last;
+            PrintArray(array[range_5_last]);
 
-            Console.WriteLine($"Liner Search : 90 is at " + $"{Array.IndexOf(scores,90)}");
+            PrintArray(array[^4..^1]);
 
-            Console.WriteLine($"Everyone passed? : " + $"{Array.TrueForAll<int>(scores,CheckPassed)}");
-
-            int[] sliced = new int[3];
-            Array.Copy(scores, 0, sliced, 0, 3);
-        
-            Array.ForEach<int>(sliced, new Action<int>(Print));
-
-
+            return;
         }
+
+        
     }
 }
