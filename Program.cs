@@ -1,21 +1,23 @@
 ﻿using System;
 
-namespace AnonymousType
+namespace ArraySample2
 {
     class MainApp
     {
         static void Main(string[] args)
         {
-            var a = new { Name = "김철수", Age = 123 };
-            Console.WriteLine($"Name : {a.Name} Age : {a.Age}");
+            int[] scores = new int[5];
+            scores[0] = 10;
+            scores[1] = 20;
+            scores[2] = 30;
+            scores[^2] = 40;
+            scores[^1] = 50;
 
-            var b = new { Subject = "김수학", Scores = new int[] { 10,20,30,40}};
+            foreach (int score in scores)
+            {
+                Console.WriteLine(score);
+            }
 
-            Console.Write($"Subject {b.Subject}, Scores : ");
-            foreach (var score in b.Scores)
-                Console.Write("{0}", score);
-
-            Console.WriteLine();
 
         }
     }
