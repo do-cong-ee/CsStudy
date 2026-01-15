@@ -1,37 +1,31 @@
 ﻿using System;
 
-namespace _2DArray
-{
+namespace MyProgram
+{   
     class MainApp
     {
+        public static Int64 Pivo_Nazi(int idx)
+        {
+            if(idx == 0)
+            {
+                return 0;
+            }
+            else if(idx == 1)
+            {
+                return 1;
+            }
+            else
+            {
+                return Pivo_Nazi(idx-1) + Pivo_Nazi(idx - 2);
+            }
+        }
+
         static void Main(string[] args)
         {
-            int[,] arr = new int[2, 3] { { 1, 2, 3 }, { 4, 5, 6 } };
+            int n;
+            n = int.Parse(Console.ReadLine());
+            Console.WriteLine("{0}", Pivo_Nazi(n));
 
-            for(int i=0;i<arr.GetLength(0);i++)
-            {
-                for(int j=0;j<arr.GetLength(1);j++)
-                {
-                    Console.Write($"[{i}, {j}] : {arr[i, j]}");
-                }
-                Console.WriteLine();
-            }
-            Console.WriteLine();
-
-            int[,] arr2 = new int[,] { { 1, 2, 3 }, { 4, 5, 6 } };
-
-            for (int i = 0; i < arr2.GetLength(0); i++)
-            {
-                for (int j = 0; j < arr2.GetLength(1); j++)
-                {
-                    Console.Write($"[{i}, {j}] : {arr2[i, j]}");
-                }
-                Console.WriteLine();
-            }
-            Console.WriteLine();
-
-            int[,] arr3 = { { 1, 2, 3 }, { 4, 5, 6 } };
         }
     }
 }
-
