@@ -20,6 +20,16 @@ namespace UsingQueue
             Console.WriteLine(ht["넷"]);
             Console.WriteLine(ht["다섯"]);
 
+
+            int[] arr = new int[3]{ 123, 456, 789 };
+            ArrayList list = new ArrayList(arr);
+            //배열을 인자로 입력해 줄 수 도 있다.
+            Stack stack = new Stack(arr);
+            //stack 도
+            Queue queue = new Queue(arr);
+            //queue 도
+
+            
         }
     }
 }
