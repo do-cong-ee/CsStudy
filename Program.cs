@@ -7,17 +7,19 @@ namespace UsingQueue
     {
         static void Main(string[] args)
         {
-            Queue que = new Queue();
-            que.Enqueue(1);
-            que.Enqueue(2);
-            que.Enqueue(3);
-            que.Enqueue(4);
-            que.Enqueue(5);
+            Hashtable ht = new Hashtable();
+            ht["하나"] = 1;
+            ht["둘"] = 2;
+            ht["셋"] = 3;
+            ht["넷"] = 4;
+            ht["다섯"] = 5;
 
-            while(que.Count>0)
-            {
-                Console.WriteLine(que.Dequeue());
-            }
+            Console.WriteLine(ht["하나"]);
+            Console.WriteLine(ht["둘"]);
+            Console.WriteLine(ht["셋"]);
+            Console.WriteLine(ht["넷"]);
+            Console.WriteLine(ht["다섯"]);
+
         }
     }
 }
