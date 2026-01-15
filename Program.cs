@@ -4,41 +4,42 @@ namespace ArraySample2
 {
     class MainApp
     {
-        private static bool CheckPassed(int score)
-        {
-            return score >= 60;
-        }
-        private static void Print(int value)
-        {
-            Console.Write($"{value} ");
-        }
-
         static void Main(string[] args)
         {
-            int[] scores = new int[] { 80, 74, 81, 90, 34 };
-            foreach (int score in scores)
-                Console.Write($"{score}");
-            Console.WriteLine();
+            int[][] jagged = new int[3][];
+            // 행의 갯수만 지정..
 
-            Array.Sort(scores);
-            // 정렬하는 함수
-            Array.ForEach<int>(scores, new Action<int>(Print));
-            // 각각의 요소에 작업을 시행함
-            Console.WriteLine();
+            jagged[0] = new int[5]{1,2,3,4,5};
+            jagged[1] = new int[3] {10,20,30};
+            jagged[2] = new int[2] {100,200};
 
-            Console.WriteLine($"Number of Dimensions : {scores.Rank}");
+            foreach(int[] arr in jagged)
+            {
+                Console.Write($"Length : {arr.Length}, ");
+                foreach(int element in arr)
+                {
+                    Console.Write($" {element}");
+                }
+                Console.WriteLine("");
+            }
+            Console.WriteLine("-----");
 
-            Console.WriteLine($"Binary Search : 81 is at " + $"{Array.BinarySearch<int>(scores, 81)}");
+            int[][] jagged2 = new int[2][]
+            {
+                new int[]{1000,2000 },
+                new int[4]{6,7,8,9}
+            };
 
-            Console.WriteLine($"Liner Search : 90 is at " + $"{Array.IndexOf(scores,90)}");
 
-            Console.WriteLine($"Everyone passed? : " + $"{Array.TrueForAll<int>(scores,CheckPassed)}");
-
-            int[] sliced = new int[3];
-            Array.Copy(scores, 0, sliced, 0, 3);
-        
-            Array.ForEach<int>(sliced, new Action<int>(Print));
-
+            foreach (int[] arr in jagged2)
+            {
+                Console.Write($"Length : {arr.Length} ,");
+                foreach (int element in arr)
+                {
+                    Console.Write($" {element}");
+                }
+                Console.WriteLine("");
+            }
 
         }
     }
