@@ -1,37 +1,18 @@
 ﻿using System;
 using System.Collections;
 
-namespace IndexerEx
+namespace Yield
 {
-    class MyList
+    class MyEnumerator
     {
-        private int[] array;
-
-        public MyList()
+        int[] numbers = { 1, 2, 3, 4, 5 };
+        public IEnumerator GetEnumerator()
         {
-            array = new int[3];
-        }
-
-        public int this[int index]
-        {
-            get
-            {
-                return array[index];
-            }
-            set
-            {
-                if (index >= array.Length)
-                {
-                    Array.Resize<int>(ref array, index + 1);
-                    Console.WriteLine("Array Resized : {0}", array.Length);
-                }
-                array[index] = value;
-            }
-        }
-
-        public int Length
-        {
-            get { return array.Length; }
+            yield return numbers[0];
+            yield return numbers[1];
+            yield return numbers[2];
+            yield break;
+            yield return numbers[3];
         }
     }
 
@@ -39,16 +20,9 @@ namespace IndexerEx
     {
         static void Main(string[] args)
         {
-            MyList list = new MyList();
-            for(int i=0;i<5;i++)
-            {
-                list[i] = i;
-            }
-
-            for(int i=0;i<list.Length;i++)
-            {
-                Console.WriteLine(list[i]);
-            }
+            var obj = new MyEnumerator();
+            foreach (int i in obj)
+                Console.WriteLine(i);
         }
     }
 }
