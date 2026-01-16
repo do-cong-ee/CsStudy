@@ -1,18 +1,64 @@
 ﻿using System;
 using System.Collections;
+using System.Runtime.InteropServices;
 
-namespace Yield
+namespace Enumerable
 {
-    class MyEnumerator
+    class MyList : IEnumerable, IEnumerator
     {
-        int[] numbers = { 1, 2, 3, 4, 5 };
+        private int[] array;
+        int position = -1;
+        public MyList()
+        {
+            array = new int[3];
+        }
+
+        public int this[int index]
+        {
+            get
+            {
+                return array[index];
+            }
+            set
+            {
+                if(index>=array.Length)
+                {
+                    Array.Resize<int>(ref array, index + 1);
+                    Console.WriteLine($"Array Resized : {array.Length}");
+                }
+
+                array[index] = value;
+            }
+        }
+        //IEnumerator 멤버
+        public object Current
+        {
+            get
+            {
+                return array[position];
+            }
+        }
+
+        //IEnumerator 멤버
+        public bool MoveNext()
+        {
+            if(this.position == array.Length-1)
+            {
+                Reset();
+                return false;
+            }
+            this.position++;
+            return (this.position < array.Length);
+        }
+
+        public void Reset()
+        {
+            position = -1;
+        }
+
         public IEnumerator GetEnumerator()
         {
-            yield return numbers[0];
-            yield return numbers[1];
-            yield return numbers[2];
-            yield break;
-            yield return numbers[3];
+            return this;
         }
     }
 
@@ -20,9 +66,14 @@ namespace Yield
     {
         static void Main(string[] args)
         {
-            var obj = new MyEnumerator();
-            foreach (int i in obj)
-                Console.WriteLine(i);
+            MyList list = new MyList();
+            for (int i = 0; i < 5; i++)
+                list[i] = i;
+
+            foreach(int element in list)
+            {
+                Console.WriteLine(element);
+            }
         }
     }
 }
