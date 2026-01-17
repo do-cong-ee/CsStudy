@@ -12,7 +12,7 @@ namespace ConstraintOnTypeParameters
     }
     class RefArray<T> where T : class
     {
-        public T[] array { get; set; } // 자동생성 프로퍼티 \
+        public T[] array { get; set; } // 자동생성 프로퍼티 
         public RefArray(int size)
         {
             array = new T[size];
