@@ -23,6 +23,18 @@ namespace CopyingArray
             {
                 Console.WriteLine("{0}", element);
             }
+
+            string[] source2 = new string[5]{ "하나", "둘", "셋", "넷", "다섯" };
+            string[] target2 = new string[source.Length];
+
+            CopyArray<string>(source2, target2);
+
+            foreach (string element2 in target2)
+            {
+                Console.WriteLine("{0}", element2);
+            }
+
+
         }
     }
 }
