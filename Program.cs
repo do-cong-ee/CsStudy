@@ -21,17 +21,19 @@ namespace ConstraintOnTypeParameters
 
     class Base { }
     class Derived : Base { }
-    class BaseArray<U> where U : Base{
+    class BaseArray<U> where U : Base
+    {
+        //Base클래스를 상속한 타입만 만들 수 있다. 
         public U[] array { get; set; }
-        public BaseArray(int size){
-        array = new U[size];
+        public BaseArray(int size)
+        {
+            array = new U[size];
         }
 
-        public void CopyArray<T>(T[] Source) where T:U {
-        Source.CopyTo(array, 0);
+        public void CopyArray<T>(T[] Source) where T : U
+        {
+            Source.CopyTo(array, 0);
         }
-    
-    
     }
     
     class MainApp
