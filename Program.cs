@@ -53,6 +53,17 @@ namespace Generic
                 Console.WriteLine(str_list[i]);
             }
 
+            MyList<Int32> Integer32_list = new MyList<Int32>();
+            Integer32_list[0] = 0;
+            Integer32_list[1] = 1;
+            Integer32_list[2] = 2;
+            Integer32_list[3] = 3;
+            Integer32_list[4] = 4;
+
+            for (int i = 0; i < Integer32_list.Length; i++)
+            {
+                Console.WriteLine(Integer32_list[i]);
+            }
         }
     }
 }
