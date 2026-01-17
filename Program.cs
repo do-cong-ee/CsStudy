@@ -1,69 +1,70 @@
 ﻿using System;
 
-namespace Generic
+namespace ConstraintOnTypeParameters
 {
-    class MyList<T>
+    class StructArray<T> where T : struct
     {
-        private T[] array;
-
-        public MyList()
+        public T[] array { get; set; }
+        public StructArray(int size)
         {
-            this.array = new T[3];
+            array = new T[size];
         }
-
-        public T this[int index]
+    }
+    class RefArray<T> where T : class
+    {
+        public T[] array { get; set; } // 자동생성 프로퍼티 \
+        public RefArray(int size)
         {
-            //e.g of Indexer
-            get 
-            {
-                return this.array[index];
-            }
-            set
-            {
-                if(index>=array.Length)
-                {
-                    Array.Resize<T>(ref array, index + 1);
-                    Console.WriteLine($"Array Resized : {array.Length}");
-                }
-
-                array[index] = value;
-            }
-        }
-
-        public int Length //자동구현 프로퍼티... 
-        {
-            get { return array.Length;  }
+            array = new T[size];
         }
     }
 
+    class Base { }
+    class Derived : Base { }
+    class BaseArray<U> where U : Base{
+        public U[] array { get; set; }
+        public BaseArray(int size){
+        array = new U[size];
+        }
+
+        public void CopyArray<T>(T[] Source) where T:U {
+        Source.CopyTo(array, 0);
+        }
+    
+    
+    }
+    
     class MainApp
     {
+        public static T CreateInstance<T>() where T : new()
+        {
+            return new T();
+        }
         static void Main(string[] args)
         {
-            MyList<string> str_list = new MyList<string>();
-            str_list[0] = "abc";
-            str_list[1] = "def";
-            str_list[2] = "ghi";
-            str_list[3] = "jfl";
-            str_list[4] = "mno";
-            // array 에 접근 하는 방식으로 class 의 object 의 member 에 접근가능..
-            // 인덱서의 힘? 
-            for(int i=0;i<str_list.Length;i++)
-            {
-                Console.WriteLine(str_list[i]);
-            }
+            StructArray<int> a = new StructArray<int>(3);
+            a.array[0] = 0;
+            a.array[1] = 1;
+            a.array[2] = 2;
 
-            MyList<Int32> Integer32_list = new MyList<Int32>();
-            Integer32_list[0] = 0;
-            Integer32_list[1] = 1;
-            Integer32_list[2] = 2;
-            Integer32_list[3] = 3;
-            Integer32_list[4] = 4;
+            RefArray<StructArray<double>> b = new RefArray<StructArray<double>>(3);
+            b.array[0] = new StructArray<double>(5);
+            b.array[1] = new StructArray<double>(10);
+            b.array[2] = new StructArray<double>(1005);
 
-            for (int i = 0; i < Integer32_list.Length; i++)
-            {
-                Console.WriteLine(Integer32_list[i]);
-            }
+            BaseArray<Base> c = new BaseArray<Base>(3);
+            c.array[0] = new Base();
+            c.array[1] = new Derived();
+            c.array[2] = CreateInstance<Base>();
+
+            BaseArray<Derived> d = new BaseArray<Derived>(3);
+            d.array[0] = new Derived();
+            c.array[1] = CreateInstance<Derived>();
+            d.array[2] = CreateInstance<Derived>();
+
+            BaseArray<Derived> e = new BaseArray<Derived>(3);
+            e.CopyArray<Derived>(d.array);
         }
     }
+    
 }
