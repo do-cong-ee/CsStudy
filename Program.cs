@@ -1,77 +1,27 @@
 ﻿using System;
-using System.Collections;
 
-namespace Enumerable
+namespace CopyingArray
 {
-    class MyList : IEnumerable, IEnumerator
-    {
-        private int[] array;
-        int position = -1;
-        public MyList()
-        {
-            array = new int[3];
-        }
-
-        public int this[int index]
-        {
-            get
-            {
-                return array[index];
-            }
-            set
-            {
-                if(index>=array.Length)
-                {
-                    Array.Resize<int>(ref array, index + 1);
-                    Console.WriteLine($"Array Resized : {array.Length}");
-                }
-
-                array[index] = value;
-            }
-        }
-        //IEnumerator 멤버
-        public object Current
-        {
-            get
-            {
-                return array[position];
-            }
-        }
-
-        //IEnumerator 멤버
-        public bool MoveNext()
-        {
-            if(this.position == array.Length-1)
-            {
-                Reset();
-                return false;
-            }
-            this.position++;
-            return (this.position < array.Length);
-        }
-
-        public void Reset()
-        {
-            position = -1;
-        }
-
-        public IEnumerator GetEnumerator()
-        {
-            return this;
-        }
-    }
-
     class MainApp
     {
+        static void CopyArray<T>(T[] source, T[] target)
+        {
+            for(int i=0;i<source.Length;i++)
+            {
+                target[i] = source[i];
+            }
+        }
+
         static void Main(string[] args)
         {
-            MyList list = new MyList();
-            for (int i = 0; i < 5; i++)
-                list[i] = i;
+            int[] source = { 1, 2, 3, 4, 5 };
+            int[] target = new int[source.Length];
 
-            foreach(int element in list)
+            CopyArray<int>(source, target);
+
+            foreach(int element in target)
             {
-                Console.WriteLine(element);
+                Console.WriteLine("{0}", element);
             }
         }
     }
