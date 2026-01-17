@@ -1,39 +1,18 @@
 ﻿using System;
 
-namespace CopyingArray
+namespace Generic
 {
-    class MainApp
+    class MyList<T>
     {
-        static void CopyArray<T>(T[] source, T[] target)
+        private T[] array;
+
+        public MyList()
         {
-            for(int i=0;i<source.Length;i++)
-            {
-                target[i] = source[i];
-            }
+            this.array = new T[3];
         }
 
-        static void Main(string[] args)
+        public T this[int index]
         {
-            int[] source = { 1, 2, 3, 4, 5 };
-            int[] target = new int[source.Length];
-
-            CopyArray<int>(source, target);
-
-            foreach(int element in target)
-            {
-                Console.WriteLine("{0}", element);
-            }
-
-            string[] source2 = new string[5]{ "하나", "둘", "셋", "넷", "다섯" };
-            string[] target2 = new string[source.Length];
-
-            CopyArray<string>(source2, target2);
-
-            foreach (string element2 in target2)
-            {
-                Console.WriteLine("{0}", element2);
-            }
-
 
         }
     }
