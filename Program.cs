@@ -1,39 +1,81 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
-namespace UsingGenericList
+namespace EnumerableGeneric
 {
-    class MainApp
+    class MyList<T> : IEnumerable<T>, IEnumerator<T>
     {
-        static void Main(string[] args)
+        private T[] array;
+        int position = -1;
+
+        public MyList()
         {
-            List<int> list = new List<int>();
-            for(int i=0;i<5;i++)
+            array = new T[3];
+        }
+
+        public T this[int index] //인덱서 
+            //인덱스로 접근하기위함.. 
+        { 
+            get
             {
-                list.Add(i);
+                return this.array[index];
             }
-
-            foreach(int element in list)
+            set
             {
-                Console.Write("{0}", element);
+                if(index >= array.Length)
+                {
+                    Array.Resize<T>(ref array, index + 1);
+                    Console.WriteLine($"Array Resized : {array.Length}");
+                }
+                this.array[index] = value;
             }
-            Console.WriteLine();
+        }
 
-            list.RemoveAt(2);
+        public int Length
+        {
+            get { return this.array.Length; }
+        }
 
-            foreach (int element in list)
+        public IEnumerator<T> GetEnumerator()
+        {
+            return this;
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this;
+        }
+
+        public T Current
+        {
+            get { return array[position]; }
+        }
+
+        object IEnumerator.Current
+        {
+            get { return array[position]; }
+        }
+
+        public bool MoveNext()
+        {
+            if(position == array.Length-1)
             {
-                Console.Write("{0}", element);
+                Reset();
+                return false;
             }
-            Console.WriteLine();
+            position++;
+            return (position < array.Length);
+        }
 
-            list.Insert(2, 2);
-
-            foreach (int element in list)
-            {
-                Console.Write("{0}", element);
-            }
-            Console.WriteLine();
+        public void Reset()
+        {
+            position = -1;
+            return;
+        }
+        public void Dispose()
+        {
+            
         }
     }
 }
