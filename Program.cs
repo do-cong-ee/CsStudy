@@ -2,80 +2,27 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace EnumerableGeneric
+namespace KillingProgram
 {
-    class MyList<T> : IEnumerable<T>, IEnumerator<T>
+    class MainApp
     {
-        private T[] array;
-        int position = -1;
-
-        public MyList()
+        static void Main(string[] args)
         {
-            array = new T[3];
-        }
+            int[] arr = new int[3] { 1, 2, 3 };
 
-        public T this[int index] //인덱서 
-            //인덱스로 접근하기위함.. 
-        { 
-            get
+            try
             {
-                return this.array[index];
-            }
-            set
-            {
-                if(index >= array.Length)
+                for (int i = 0; i < 5; i++)
                 {
-                    Array.Resize<T>(ref array, index + 1);
-                    Console.WriteLine($"Array Resized : {array.Length}");
+                    Console.WriteLine($"{arr[i]}");
                 }
-                this.array[index] = value;
             }
-        }
-
-        public int Length
-        {
-            get { return this.array.Length; }
-        }
-
-        public IEnumerator<T> GetEnumerator()
-        {
-            return this;
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return this;
-        }
-
-        public T Current
-        {
-            get { return array[position]; }
-        }
-
-        object IEnumerator.Current
-        {
-            get { return array[position]; }
-        }
-
-        public bool MoveNext()
-        {
-            if(position == array.Length-1)
+            catch (IndexOutOfRangeException e)
             {
-                Reset();
-                return false;
+                Console.WriteLine($"예외가 발생했습니다 : {e.Message}");
             }
-            position++;
-            return (position < array.Length);
-        }
 
-        public void Reset()
-        {
-            position = -1;
-            return;
-        }
-        public void Dispose()
-        {
-            
+            Console.WriteLine("종료");
         }
     }
 }
