@@ -2,34 +2,48 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace ThrowException
+namespace MyException
 {
+    class InvalidArgumentException : Exception
+    {
+        public InvalidArgumentException()
+        {
+
+        }
+        public InvalidArgumentException(string massage) : base(massage)
+        {
+
+        }
+
+        public object Argument
+        {
+            get; set;
+        }
+        public string range
+        {
+            get; set;
+        }
+    }
+
     class MainApp
     {
-        static void Main(string[] args)
+        static uint MergeARGB(uint alpha, uint red, uint green, uint blue)
         {
-            try
+            uint[] args = new uint[] { alpha, red, green, blue };
+
+            foreach(uint arg in args)
             {
-                int? a=null; //nullable 
-                int b = a ?? throw new ArgumentNullException();
-            }
-            catch (ArgumentNullException e)
-            {
-                Console.WriteLine($"{e}");
+                if (arg > 255)
+                    throw new InvalidArgumentException()
+                    {
+                        Argument = arg,
+                        range = "0-255"
+                    };
+
+                
             }
 
-            try
-            {
-                int[] array = new int[] { 1, 2, 3 };
-                int index = 4;
-                int value = array[
-                    index >= 0 && index < 4 ? index : throw new IndexOutOfRangeException()
-                    ];
-            }
-            catch (IndexOutOfRangeException e)
-            {
-                Console.WriteLine(e);
-            }
+            return (alpha << 24 & 0xFF00000);
         }
     }
 }
