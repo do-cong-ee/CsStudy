@@ -2,41 +2,28 @@
 
 namespace UsingCallBack
 {
-    delegate int Compare(int a, int b);
+    delegate int Compare<T>(T a, T b);
 
     class MainApp
     {
-        static int AscendCompare(int a, int b)
+        static int AscendCompare<T>(T a, T b) where T : IComparable<T>
         {
-            if (a > b)
-            {
-                return 1;
-            }
-            else if (a == b)
-            {
-                return 0;
-            }
-            else
-                return -1;
+            return a.CompareTo(b);
         }
 
-        static int DescendCompare(int a, int b)
+        static int DescendCompare<T>(T a, T b) where T: IComparable<T>
         {
-            if (a < b)
-                return 1;
-            else if (a == b)
-                return 0;
-            else
-                return -1;
+            return a.CompareTo(b) * -1;
         }
 
-        static void BubbleSort(int[] arr, Compare Comparer)
+        static void BubbleSort<T>(T[] arr, Compare<T> Comparer)
         {
-            int i = 0, j = 0, temp = 0;
+            int i = 0, j = 0;
+            T temp;
 
             for (i = 0; i < arr.Length; i++)
             {
-                for (j = 0; j < arr.Length - (i + 1); i++)
+                for (j = 0; j < arr.Length - (i + 1); j++)
                 {
                     if (Comparer(arr[j], arr[j + 1]) > 0)
                     {
@@ -52,7 +39,19 @@ namespace UsingCallBack
         {
             int[] array = new int[] { 3, 7, 4, 2, 10 };
             Console.WriteLine("Ascending");
-            BubbleSort(array, new Compare(AscendCompare));
+            BubbleSort(array, new Compare<int>(AscendCompare));
+
+            for (int i = 0; i < array.Length; i++)
+                Console.Write($"{array[i]} ");
+            Console.WriteLine();
+
+            string[] array2 = { "abc", "def", "ghi", "jkl", "mno" };
+
+            Console.WriteLine("Descending");
+            BubbleSort(array2, new Compare<string>(DescendCompare));
+
+            for (int i = 0; i < array2.Length; i++)
+                Console.Write($"{array2[i]} ");
         }
     }
 }
