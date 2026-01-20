@@ -1,41 +1,34 @@
 ﻿using System;
 
-namespace ArraySample2
+namespace Dae_ri_ja
 {
+    delegate int MyDelegate(int a, int b);
+    class Calculator
+    {
+        public int Plus(int a,int b)
+        {
+            return a + b;
+        }
+        public int Minus(int a,int b)
+        {
+            return a - b;
+        }
+    }
+
     class MainApp
     {
-        static void PrintArray(System.Array array)
-        {
-            foreach (var e in array)
-                Console.Write(e);
-            Console.WriteLine();
-        }
-
         static void Main(string[] args)
         {
-            char[] array = new char[26];
-            for(int i=0;i<array.Length;i++)
-            {
-                array[i] = (char)('A' + i);
-            }
+            Calculator Calc = new Calculator();
+            MyDelegate Callback;
 
-            PrintArray(array[..]);
-            PrintArray(array[3..]);
-            PrintArray(array[..16]);
-            PrintArray(array[0..4]);
+            Callback = new MyDelegate(Calc.Plus);
+            Console.WriteLine(Callback(3, 4));
 
-            System.Range range_5_10 = 5..10;
-            PrintArray(array[range_5_10]);
-
-            System.Index last = ^0;
-            System.Range range_5_last = 5..last;
-            PrintArray(array[range_5_last]);
-
-            PrintArray(array[^4..^1]);
-
-            return;
+            Callback = new MyDelegate(Calc.Minus);
+            Console.WriteLine(Callback(3, 4));
         }
-
-        
     }
+
+  
 }
