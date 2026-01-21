@@ -3,10 +3,12 @@
 namespace DelegateChains
 {
     delegate void Notify(string Massage);
+    //대리자 생성..
 
     class Notifier
     {
         public Notify EventOccured;
+        //대리자 인스턴스 생성... 
     }
 
     class EventListener
