@@ -1,37 +1,29 @@
 ﻿using System;
 
-namespace EventTest
+namespace Rambda_sik
 {
-    delegate void EventHandler(string message);
-
-    class MyNotifier
-    {
-        public event EventHandler SomethingHappened;
-        public void DoSomeThing(int number)
-        {
-            int temp = number % 10;
-            if (temp != 0 && temp % 3 == 0)
-            {
-                SomethingHappened(string.Format("{0} 짝", number));
-            }
-        }
-    }
+    delegate int Calculator(int a, int b);
 
     class MainApp
     {
-        static public void MyHander(string message)
+        static int Calculator2(int a, int b)
         {
-            Console.WriteLine(message);
+            return a + b;
         }
+
         static void Main(string[] args)
         {
-            MyNotifier notifier = new MyNotifier();
-            notifier.SomethingHappened += new EventHandler(MyHander);
         
-            for(int i=0;i<300;i++)
-            {
-                notifier.DoSomeThing(i);
-            }
+            Calculator calc = (a, b) => a + b;
+
+            Console.WriteLine(calc(10,20));
+
+            Calculator calc2 = new Calculator(Calculator2);
+
+            Console.WriteLine(calc2(120, 20));
+
+
+            return;
         }
     }
 }
