@@ -1,36 +1,25 @@
 ﻿using System;
 
-namespace Rambda_sik
+namespace StatementLambda
 {
-    delegate int Calculator(int a, int b);
-    delegate void DoSomeThing();
     class MainApp
     {
-        static int Calculator2(int a, int b)
-        {
-            return a + b;
-        }
+        delegate string Concatenate(string[] str);
 
         static void Main(string[] args)
         {
-        
-            Calculator calc = (a, b) => a + b;
+            Concatenate cat = (string[] str) =>
+                {
+                    string result = "";
+                    foreach(string s in str)
+                    {
+                        result += s;
+                    }
 
-            Console.WriteLine(calc(10,20));
+                    return result;
+                };
 
-            Calculator calc2 = new Calculator(Calculator2);
-
-            Console.WriteLine(calc2(120, 20));
-
-            DoSomeThing doit = () =>
-            {
-                Console.WriteLine("do some Thing");
-                Console.WriteLine("like this");
-            };
-
-            doit();
-
-            return;
+            Console.WriteLine(cat(args));
         }
     }
 }
