@@ -8,18 +8,15 @@ namespace StatementLambda
 
         static void Main(string[] args)
         {
-            Concatenate cat = (string[] str) =>
-                {
-                    string result = "";
-                    foreach(string s in str)
-                    {
-                        result += s;
-                    }
+            Func<int> func1 = () => { return 10; };
+            Console.WriteLine(func1());
 
-                    return result;
-                };
+            Func<int, int> func2 = (int a) => { return a * 2; };
 
-            Console.WriteLine(cat(args));
+            Console.WriteLine(func2(20));
+
+            Func<int, int, int> func3 = (int a, int b) => { return a<<b; };
+            Console.WriteLine(func3(10, 3));
         }
     }
 }
