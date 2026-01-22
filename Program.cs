@@ -1,22 +1,15 @@
 ﻿using System;
 
-namespace StatementLambda
+namespace using_action
 {
     class MainApp
     {
-        delegate string Concatenate(string[] str);
-
         static void Main(string[] args)
         {
-            Func<int> func1 = () => { return 10; };
-            Console.WriteLine(func1());
 
-            Func<int, int> func2 = (int a) => { return a * 2; };
+            Action<string> act = (string message) => { Console.WriteLine(message); };
 
-            Console.WriteLine(func2(20));
-
-            Func<int, int, int> func3 = (int a, int b) => { return a<<b; };
-            Console.WriteLine(func3(10, 3));
+            act("Hello World!");
         }
     }
 }
