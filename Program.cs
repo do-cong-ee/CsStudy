@@ -1,69 +1,37 @@
 ﻿using System;
 
-namespace DelegateChains
+namespace EventTest
 {
-    delegate void Notify(string Massage);
-    //대리자 생성..
+    delegate void EventHandler(string message);
 
-    class Notifier
+    class MyNotifier
     {
-        public Notify EventOccured;
-        //대리자 인스턴스 생성... 
-    }
-
-    class EventListener
-    {
-        private string name;
-        public EventListener(string name)
+        public event EventHandler SomethingHappened;
+        public void DoSomeThing(int number)
         {
-            this.name = name;
-        }
-
-        public void SomethingHappend(string message)
-        {
-            Console.WriteLine($"{name}.SomeThingHappened : {message}");
+            int temp = number % 10;
+            if (temp != 0 && temp % 3 == 0)
+            {
+                SomethingHappened(string.Format("{0} 짝", number));
+            }
         }
     }
 
     class MainApp
     {
+        static public void MyHander(string message)
+        {
+            Console.WriteLine(message);
+        }
         static void Main(string[] args)
         {
-            Notifier notifier = new Notifier();
-            EventListener listener1 = new EventListener("Listener1");
-            EventListener listener2 = new EventListener("Listener2");
-            EventListener listener3 = new EventListener("Listener3");
-
-            notifier.EventOccured += listener1.SomethingHappend;
-            notifier.EventOccured += listener2.SomethingHappend;
-            notifier.EventOccured += listener3.SomethingHappend;
-            notifier.EventOccured("You ve got mail");
-
-            Console.WriteLine();
-
-            notifier.EventOccured -= listener2.SomethingHappend;
-            notifier.EventOccured("DownLoad complete");
-
-            Console.WriteLine();
-
-            notifier.EventOccured = new Notify(listener2.SomethingHappend)
-                                    + new Notify(listener3.SomethingHappend);
-            notifier.EventOccured("Nuclear launch detected");
-
-            Console.WriteLine();
-
-            Notify notify1 = new Notify(listener1.SomethingHappend);
-            Notify notify2 = new Notify(listener2.SomethingHappend);
-
-            notifier.EventOccured =
-                (Notify)Delegate.Combine(notify1, notify2);
-            notifier.EventOccured("Fire");
-
-            Console.WriteLine();
-
-            notifier.EventOccured =
-                (Notify)Delegate.Remove(notifier.EventOccured, notify2);
-            notifier.EventOccured("RPG!");
+            MyNotifier notifier = new MyNotifier();
+            notifier.SomethingHappened += new EventHandler(MyHander);
+        
+            for(int i=0;i<300;i++)
+            {
+                notifier.DoSomeThing(i);
+            }
         }
     }
 }
