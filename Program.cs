@@ -1,22 +1,46 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
-namespace FromEx
+
+namespace SimpleLinq
 {
-    class MainApp
+    class Profile
     {
-        static void Main(string[] args)
+        public string Name { get; set; }
+        public int Height
         {
-            int[] numbers = new int[] { 9, 2, 6, 4, 5, 3, 7, 8, 1, 10 };
+            get; set;
+        }
 
-            var result = from n in numbers
-                         where n % 2 == 0
-                         orderby n
-                         select n;
-
-            foreach (var element in result)
+        class MainApp
+        {
+            static void Main(string[] args)
             {
-                Console.WriteLine($"{element}");
+                Profile[] arrProfiles = new Profile[]
+                {
+                    new Profile() { Name = "김난다", Height = 180 },
+                    new Profile() { Name = "이름표", Height = 170 },
+                    new Profile() { Name = "박아지", Height = 160 },
+                    new Profile() { Name = "최고다", Height = 150 },
+                    new Profile() { Name = "정말로", Height = 140 }
+                };
+
+
+                var profiles = from profile in arrProfiles
+                               where profile.Height < 175
+                               orderby profile.Height descending
+                               select new
+                               {
+                                   Name = profile.Name,
+                                   InchHeight = profile.Height * 0.393
+                               };
+
+
+                foreach (var profile in profiles)
+                {
+                    Console.WriteLine($"{profile.Name} : {profile.InchHeight}");
+                }
             }
         }
     }
