@@ -26,20 +26,19 @@ namespace SimpleLinq
                     new Profile() { Name = "정말로", Height = 140 }
                 };
 
+                var listProfile = from profile in arrProfiles
+                                  orderby profile.Height
+                                  group profile by profile.Height < 165 into g
+                                  select new { Groupkey = g.Key, Profile = g };
 
-                var profiles = from profile in arrProfiles
-                               where profile.Height < 175
-                               orderby profile.Height descending
-                               select new
-                               {
-                                   Name = profile.Name,
-                                   InchHeight = profile.Height * 0.393
-                               };
-
-
-                foreach (var profile in profiles)
+                foreach (var Group in listProfile)
                 {
-                    Console.WriteLine($"{profile.Name} : {profile.InchHeight}");
+                    Console.WriteLine("165 미만 ? {0}", Group.Groupkey);
+
+                    foreach(var profile in Group.Profile)
+                    {
+                        Console.WriteLine($">>> {profile.Name},{profile.Height}");
+                    }
                 }
             }
         }
