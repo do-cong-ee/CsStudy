@@ -3,44 +3,37 @@ using System.Collections.Generic;
 using System.Linq;
 
 
-namespace SimpleLinq
+namespace FromFrom
 {
-    class Profile
+    class Class
     {
-        public string Name { get; set; }
-        public int Height
-        {
-            get; set;
-        }
+        public string name { get; set; }
+        public int[] score { get; set; }
 
-        class MainApp
+    }
+
+    class MainApp
+    {
+        static void Main(string[] args)
         {
-            static void Main(string[] args)
+            Class[] arrClass =
             {
-                Profile[] arrProfiles = new Profile[]
-                {
-                    new Profile() { Name = "김난다", Height = 180 },
-                    new Profile() { Name = "이름표", Height = 170 },
-                    new Profile() { Name = "박아지", Height = 160 },
-                    new Profile() { Name = "최고다", Height = 150 },
-                    new Profile() { Name = "정말로", Height = 140 }
-                };
+                new Class(){name = "연두반", score = new int[] {99,88,70,24}},
+                new Class(){name="초록반", score = new int[]{60,45,87,72 } },
+                new Class(){name="파랑반", score = new int[]{92,30,85,94 } },
+                new Class(){name="노랑반", score = new int[]{90,88,0,17 } }
 
+            };
 
-                var profiles = from profile in arrProfiles
-                               where profile.Height < 175
-                               orderby profile.Height descending
-                               select new
-                               {
-                                   Name = profile.Name,
-                                   InchHeight = profile.Height * 0.393
-                               };
+            var classes = from c in arrClass
+                          from s in c.score
+                          where s < 60
+                          orderby s
+                          select new { c.name, lowest = s };
 
-
-                foreach (var profile in profiles)
-                {
-                    Console.WriteLine($"{profile.Name} : {profile.InchHeight}");
-                }
+            foreach (var c in classes)
+            {
+                Console.WriteLine($"낙제 : {c.name} ({c.lowest})");
             }
         }
     }
