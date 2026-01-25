@@ -1,21 +1,34 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using System.Reflection;
 
-namespace ExReflection
+namespace GetType
 {
     class MainApp
     {
-        static void Main(string[] args)
+        static void PrintInterfaces(Type type)
         {
-            int a = 0;
+            Console.WriteLine("--------------Interfaces---------------");
 
-            Type type = a.GetType();
-            FieldInfo[] fields = type.GetFields();
-
-            foreach(FieldInfo field in fields)
+            Type[] interfaces = type.GetInterfaces();
+            foreach(Type i in interfaces)
             {
-                Console.WriteLine("type : {0}, Name :{1}", field.FieldType.Name, field.Name);
+                Console.WriteLine("Name :{0}", i.Name);
             }
+
+            Console.WriteLine();
+        }
+
+        static void PrintFields(Type type)
+        {
+            Console.WriteLine("--------------Fields---------------");
+
+            FieldInfo[] fieldinfos = type.GetFields(
+                BindingFlags.NonPublic |
+                BindingFlags.Public |
+                BindingFlags.Static |
+                BindingFlags.Instance);
         }
     }
 }
