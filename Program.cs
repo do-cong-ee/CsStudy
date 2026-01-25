@@ -1,45 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Reflection;
 
-
-namespace SimpleLinq
+namespace ExReflection
 {
-    class Profile
+    class MainApp
     {
-        public string Name { get; set; }
-        public int Height
+        static void Main(string[] args)
         {
-            get; set;
-        }
+            int a = 0;
 
-        class MainApp
-        {
-            static void Main(string[] args)
+            Type type = a.GetType();
+            FieldInfo[] fields = type.GetFields();
+
+            foreach(FieldInfo field in fields)
             {
-                Profile[] arrProfiles = new Profile[]
-                {
-                    new Profile() { Name = "김난다", Height = 180 },
-                    new Profile() { Name = "이름표", Height = 170 },
-                    new Profile() { Name = "박아지", Height = 160 },
-                    new Profile() { Name = "최고다", Height = 150 },
-                    new Profile() { Name = "정말로", Height = 140 }
-                };
-
-                var listProfile = from profile in arrProfiles
-                                  orderby profile.Height
-                                  group profile by profile.Height < 165 into g
-                                  select new { Groupkey = g.Key, Profile = g };
-
-                foreach (var Group in listProfile)
-                {
-                    Console.WriteLine("165 미만 ? {0}", Group.Groupkey);
-
-                    foreach(var profile in Group.Profile)
-                    {
-                        Console.WriteLine($">>> {profile.Name},{profile.Height}");
-                    }
-                }
+                Console.WriteLine("type : {0}, Name :{1}", field.FieldType.Name, field.Name);
             }
         }
     }
