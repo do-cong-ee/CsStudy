@@ -1,60 +1,42 @@
 ﻿using System;
+using System.Dynamic;
 using System.Reflection;
+using System.Reflection.Emit;
 
-namespace DynamicInstance
+namespace EmitTest
 {
-    class Profile
+    public class MainApp
     {
-        private string name;
-        private string phone;
-        public Profile()
+        public static void Main(string[] args)
         {
-            name = "";
-            phone = "";
-        }
+            AssemblyBuilder newAssembly =
+                AssemblyBuilder.DefineDynamicAssembly(
+                    new AssemblyName("CalculatorAssembly"),
+                    AssemblyBuilderAccess.Run); // 어샘블리 생성 -> 이제 모듈 생성할차례
 
-        public Profile(string name, string phone)
-        {
-            this.name = name;
-            this.phone = phone;
-        }
+            ModuleBuilder newModule = newAssembly.DefineDynamicModule("Calculator"); // 모듈 -> 이제 class 타입 생성할차례
 
-        public void Print()
-        {
-            Console.WriteLine($"{this.name}, {this.phone}");
-        }
+            TypeBuilder newType = newModule.DefineType("Sum1To100"); //class -> 이제 메소드 생성할 차례
 
-        public string Name
-        {
-            get { return name; } set { this.name = value; }
-        }
-        public string Phone
-        {
-            get { return phone; }
-            set { this.phone = value; }
-        }
-    }
+            MethodBuilder newMethod = newType.DefineMethod("Calculate",MethodAttributes.Public,typeof(int),new Type[0]);
 
-    class MainApp
-    {
-        static void Main(string[] args)
-        {
-            Type type = Type.GetType("DynamicInstance.Profile");
-            MethodInfo methodInfo = type.GetMethod("Print");
+            ILGenerator generator = newMethod.GetILGenerator(); //IL 명령어 생성기 
 
-            PropertyInfo nameProperty = type.GetProperty("Name");
-            PropertyInfo phoneProperty = type.GetProperty("Phone");
+            generator.Emit(OpCodes.Ldc_I4, 1);
 
-            object profile = Activator.CreateInstance(type, "박상현", "512-1234");
-            methodInfo.Invoke(profile, null); //null 은 인자가 들어가야한다..
+            for(int i=2;i<=100;i++)
+            {
+                generator.Emit(OpCodes.Ldc_I4, i);
+                generator.Emit(OpCodes.Add);
+            }
 
-            profile = Activator.CreateInstance(type);
-            nameProperty.SetValue(profile, "박찬호", null);
-            phoneProperty.SetValue(profile, "997-1551", null);
+            generator.Emit(OpCodes.Ret); //반환 
+            newType.CreateType(); //작성을 다함 
 
-            methodInfo.Invoke(profile, null);
-
-            Console.WriteLine("{0} : {1}", nameProperty.GetValue(profile, null), phoneProperty.GetValue(profile, null));
+            object sum1To100 = Activator.CreateInstance(newType);
+            Type sumType = sum1To100.GetType();
+            MethodInfo calculateMethod = sumType.GetMethod("Calculate");
+            Console.WriteLine(calculateMethod.Invoke(sum1To100, null));
         }
     }
 }
