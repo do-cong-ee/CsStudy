@@ -9,12 +9,14 @@ namespace DynamicInstance
         private string phone;
         public Profile()
         {
-            name ="",phone = ""
+            name = "";
+            phone = "";
         }
 
         public Profile(string name, string phone)
         {
-            this.name = name, this.phone = phone;
+            this.name = name;
+            this.phone = phone;
         }
 
         public void Print()
@@ -24,12 +26,12 @@ namespace DynamicInstance
 
         public string Name
         {
-            get { return name; } set { this.name = value};
+            get { return name; } set { this.name = value; }
         }
         public string Phone
         {
             get { return phone; }
-            set { this.phone = value};
+            set { this.phone = value; }
         }
     }
 
@@ -48,7 +50,7 @@ namespace DynamicInstance
 
             profile = Activator.CreateInstance(type);
             nameProperty.SetValue(profile, "박찬호", null);
-            phoneProperty.setValue(profile, "997-1551", null);
+            phoneProperty.SetValue(profile, "997-1551", null);
 
             methodInfo.Invoke(profile, null);
 
