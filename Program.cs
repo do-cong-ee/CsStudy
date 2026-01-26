@@ -2,7 +2,7 @@
 
 namespace DuckTyping
 {
-    class Duck
+    class ori
     {
         public void Walk()
         {
@@ -18,7 +18,7 @@ namespace DuckTyping
         }
     }
 
-    class Mallard : Duck
+    class Mallard : ori
     {
     }
 
@@ -42,7 +42,7 @@ namespace DuckTyping
     {
         static void Main(string[] args)
         {
-            dynamic[] arr = new dynamic[3] { new Duck(), new Mallard { }, new Robot() };
+            dynamic[] arr = new dynamic[3] { new ori(), new Mallard { }, new Robot() };
             //Duck[] arr2 = new Duck[3] { new Duck(), new Mallard { }, new Robot() };
             foreach (dynamic duck in arr)
             {
