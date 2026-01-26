@@ -1,27 +1,27 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace MyAttribute
 {
-    class MyClass
+    public static class Trace
     {
-        [Obsolete("OldMethod 는 버려졌읍니다, NewMethod()를 이용하셔요 아이고난1 아이고난2 뭉탱이")]
-        public void OldMethod()
+        public static void WriteLine(string message, 
+            [CallerFilePath] string file = "",
+            [CallerLineNumber] int line = 0, 
+            [CallerMemberName] string member = "")
         {
-            Console.WriteLine("I am Old");
+            Console.WriteLine("{0}(line :{1}) {2} {3}", file, line, member, message);
         }
 
-        public void NewMethod()
-        {
-            Console.WriteLine("I am new");
-        }
     }
+
+   
     class MainApp
     {
         static void Main(string[] args)
         {
-            MyClass myclass = new MyClass();
-            myclass.OldMethod();
-            myclass.NewMethod();
+            Trace.WriteLine("꼬수운 프로그래밍"); 
         }
     }
 }
