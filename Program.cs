@@ -1,83 +1,50 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Reflection;
 
-namespace GetType
+namespace DynamicInstance
 {
-    class MainApp
+    class Profile
     {
-        static void PrintInterfaces(Type type)
+        private string name;
+        private string phone;
+        public Profile()
         {
-            Console.WriteLine("--------------Interfaces---------------");
-
-            Type[] interfaces = type.GetInterfaces();
-            foreach(Type i in interfaces)
-            {
-                Console.WriteLine("Name :{0}", i.Name);
-            }
-
-            Console.WriteLine();
+            name ="",phone = ""
         }
 
-        static void PrintFields(Type type)
+        public Profile(string name, string phone)
         {
-            Console.WriteLine("--------------Fields---------------");
-
-            FieldInfo[] fieldinfos = type.GetFields(
-                BindingFlags.NonPublic |
-                BindingFlags.Public |
-                BindingFlags.Static |
-                BindingFlags.Instance);
-
-            foreach (FieldInfo field in fieldinfos)
-            {
-                String accessLevel = "protected";
-                if (field.IsPublic) accessLevel = "public";
-                else if (field.IsPrivate) accessLevel = "private";
-
-                Console.WriteLine("Access : {0}, Type : {1}, Name:{2}",
-                    accessLevel, field.FieldType.Name, field.Name);
-            }
-
-            Console.WriteLine();
+            this.name = name, this.phone = phone;
         }
-        
-        static void PrintMethods(Type type)
+
+        public void Print()
         {
-            Console.WriteLine("--------------Methods---------------");
-            MethodInfo[] methods = type.GetMethods();
-
-            foreach(MethodInfo method in methods)
-            {
-                Console.Write("Type : {0}, Name :{1}, Parameter :",
-                    method.ReturnType.Name, method.Name);
-
-                ParameterInfo[] args = method.GetParameters();
-
-                for(int i=0;i<args.Length;i++)
-                {
-                    Console.Write("{0}", args[i].ParameterType.Name);
-                    if(i<args.Length-1)
-                    {
-                        Console.Write(" ");
-                    }
-                }
-                Console.WriteLine();
-            }
-            Console.WriteLine();
+            Console.WriteLine($"{this.name}, {this.phone}");
         }
-    
-        static void Main(string[] args)
+
+        public string Name
         {
-            int a=0;
-            Type type = a.GetType();
-
-            PrintFields(type);
-            PrintInterfaces(type);
-            PrintMethods(type);
+            get { return name; } set { this.name = value};
         }
-    
+        public string Phone
+        {
+            get { return phone; }
+            set { this.phone = value};
+        }
     }
 
+    class MainApp
+    {
+        static void Main(string[] args)
+        {
+            Type type = Type.GetType("DynamicInstance.Profile");
+            MethodInfo methodInfo = type.GetMethod("Print");
+
+            PropertyInfo nameProperty = type.GetProperty("Name");
+            PropertyInfo phoneProperty = type.GetProperty("Phone");
+
+            object profile = Activator.CreateInstance(type, "박상현", "512-1234");
+            methodInfo.Invoke(profile, null); //null 은 인자가 들어가야한다..
+        }
+    }
 }
