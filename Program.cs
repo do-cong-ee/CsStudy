@@ -2,26 +2,23 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-namespace MyAttribute
+namespace MyDynamic
 {
-    public static class Trace
+    class MyClass
     {
-        public static void WriteLine(string message, 
-            [CallerFilePath] string file = "",
-            [CallerLineNumber] int line = 0, 
-            [CallerMemberName] string member = "")
+        public void FuncAAA()
         {
-            Console.WriteLine("{0}(line :{1}) {2} {3}", file, line, member, message);
+            //do not thing
         }
-
     }
 
-   
     class MainApp
     {
         static void Main(string[] args)
         {
-            Trace.WriteLine("꼬수운 프로그래밍"); 
+            dynamic obj = new MyClass();
+            obj.FuncAAA();
+            obj.FuncBBB();
         }
     }
 }
