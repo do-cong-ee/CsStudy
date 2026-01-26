@@ -45,6 +45,14 @@ namespace DynamicInstance
 
             object profile = Activator.CreateInstance(type, "박상현", "512-1234");
             methodInfo.Invoke(profile, null); //null 은 인자가 들어가야한다..
+
+            profile = Activator.CreateInstance(type);
+            nameProperty.SetValue(profile, "박찬호", null);
+            phoneProperty.setValue(profile, "997-1551", null);
+
+            methodInfo.Invoke(profile, null);
+
+            Console.WriteLine("{0} : {1}", nameProperty.GetValue(profile, null), phoneProperty.GetValue(profile, null));
         }
     }
 }
