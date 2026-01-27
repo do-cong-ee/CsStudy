@@ -1,37 +1,32 @@
 ﻿using System;
 using System.IO;
 
-namespace BasicIO
+namespace BinaryFile
+    
 {
     class MainApp
     {
         static void Main(string[] args)
         {
-            long someValue = 0x123456789ABCDEF0;
-            Console.WriteLine("{0,-1} : 0x{1:X16}", "Original Data", someValue); // 원본 데이터 생성...
+            using (BinaryWriter bw = new BinaryWriter(new FileStream("a.dat", FileMode.Create)))
+            {
+                bw.Write(int.MaxValue);
+                bw.Write("Good Morning");
+                bw.Write(UInt64.MaxValue);
+                bw.Write("안녕하십니꺼");
+                bw.Write(double.MaxValue);
+            } //bw stream 은 여기서 close 된다. 
 
-            Stream outStream = new FileStream("a.dat", FileMode.Create); //출력스트림 생성
+            BinaryReader br = new BinaryReader(new FileStream("a.dat", FileMode.Open));
 
-            byte[] wBytes = BitConverter.GetBytes(someValue); //출력스트림에 쓸 버퍼임. 
+            Console.WriteLine($"File Size : {br.BaseStream.Length} bytes");
+            Console.WriteLine($"{br.ReadInt32()}");
+            Console.WriteLine($"{br.ReadString()}");
+            Console.WriteLine($"{br.ReadUInt64()}");
+            Console.WriteLine($"{br.ReadString()}");
+            Console.WriteLine($"{br.ReadDouble()}");
 
-            Console.Write("{0,-13} : ", "Byte Array");
-            foreach (byte b in wBytes)
-                Console.Write("{0:X2}", b);
-            Console.WriteLine();
-
-            outStream.Write(wBytes, 0, wBytes.Length); 
-            outStream.Close();
-
-            Stream inStream = new FileStream("a.dat", FileMode.Open);
-            byte[] rbytes = new byte[8];
-
-            int i = 0;
-            while (inStream.Position < inStream.Length)
-                rbytes[i++] = (byte)inStream.ReadByte();
-
-            long readValue = BitConverter.ToInt64(rbytes, 0);
-
-            Console.Write("{0,-13} : 0x{1:X16}", "Read Data",readValue);
+            return;
         }
     }
 }
