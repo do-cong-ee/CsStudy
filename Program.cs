@@ -1,45 +1,43 @@
 ﻿using System;
 using System.ComponentModel;
 using System.IO;
+using FS = System.IO.FileStream;
+//별칭 지시자 System.IO.FileStream 을 FS 로 줄여서 부를 수 있게 해준다.
 
-namespace SeqNRand
+namespace UsingDeclare
 {
     class MainApp
     {
         static void Main(string[] args)
         {
-            Stream outStream = new FileStream("a.dat", FileMode.Create);
-            Console.WriteLine($"Position : {outStream.Position}"); //Position 이 프로퍼티로 구현 되어있음... 
+            long someValue = 0x123456789ABCDEF0;
+            Console.WriteLine("{0,-1} : 0x{1:X16}", "Original Data", someValue);
 
-            outStream.WriteByte(0x01);
-            Console.WriteLine($"Position : {outStream.Position}");
+            using (Stream outStream = new FS("a.dat", FileMode.Create))
+            {
+                byte[] wbytes = BitConverter.GetBytes(someValue);
 
-            outStream.WriteByte(0x02);
-            Console.WriteLine($"Position : {outStream.Position}");
+                Console.Write("{0,-13} : ", "Byte Array");
 
-            outStream.WriteByte(0x03);
-            Console.WriteLine($"Position : {outStream.Position}");
+                foreach(byte b in wbytes)
+                {
+                    Console.Write("{0:X2}", b);
+                }
+                Console.WriteLine();
 
-            outStream.Seek(5, SeekOrigin.Current);
-            Console.WriteLine($"Position : {outStream.Position}");
+                outStream.Write(wbytes, 0, wbytes.Length);
+            }
 
-            outStream.WriteByte(0x04);
-            Console.WriteLine($"Position : {outStream.Position}");
+            using Stream inStream = new FS("a.dat", FileMode.Open);
+            byte[] rByte = new byte[8];
 
-            outStream.Close();
+            int i = 0;
+            while (inStream.Position < inStream.Length)
+                rByte[i++] = (byte)inStream.ReadByte();
 
-            byte[] rbyte = new byte[16];
-            Stream inStream = new FileStream("a.dat", FileMode.Open);
+            long readValue = BitConverter.ToInt64(rByte);
+            Console.WriteLine("{0,-13} : 0x{1:X16}", "Read Data", readValue);
 
-            //inStream.Seek(0, SeekOrigin.End);
-            inStream.Read(rbyte, 0, 16);
-            
-            int n;
-            n = BitConverter.ToInt32(rbyte);
-
-            Console.WriteLine(n);
-
-            inStream.Close();
         }
     }
 }
