@@ -2,6 +2,7 @@
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text.Json.Serialization;
+#pragma warning disable SYSLIB0011
 
 
 namespace Serialization
