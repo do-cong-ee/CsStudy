@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using System.Io;
+using System.IO;
 
 namespace Dir
 {
@@ -21,7 +21,7 @@ namespace Dir
                                let info = new DirectoryInfo(dir)
                                select new
                                {
-                                   Name = info.name,
+                                   Name = info.Name,
                                    Attributes = info.Attributes
                                }).ToList();
 
@@ -39,7 +39,7 @@ namespace Dir
                          }).ToList();
 
             foreach (var f in files)
-                Console.WriteLine($"{f.name} : {f.FileSize}, {f.Attributes}");
+                Console.WriteLine($"{f.Name} : {f.FileSize}, {f.Attributes}");
         }
     }
 }
