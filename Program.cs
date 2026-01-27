@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.IO;
 
 namespace SeqNRand
@@ -26,6 +27,19 @@ namespace SeqNRand
             Console.WriteLine($"Position : {outStream.Position}");
 
             outStream.Close();
+
+            byte[] rbyte = new byte[16];
+            Stream inStream = new FileStream("a.dat", FileMode.Open);
+
+            //inStream.Seek(0, SeekOrigin.End);
+            inStream.Read(rbyte, 0, 16);
+            
+            int n;
+            n = BitConverter.ToInt32(rbyte);
+
+            Console.WriteLine(n);
+
+            inStream.Close();
         }
     }
 }
