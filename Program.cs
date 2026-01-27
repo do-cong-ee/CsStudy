@@ -1,37 +1,31 @@
 ﻿using System;
 using System.IO;
 
-namespace BasicIO
+namespace SeqNRand
 {
     class MainApp
     {
         static void Main(string[] args)
         {
-            long someValue = 0x123456789ABCDEF0;
-            Console.WriteLine("{0,-1} : 0x{1:X16}", "Original Data", someValue); // 원본 데이터 생성...
+            Stream outStream = new FileStream("a.dat", FileMode.Create);
+            Console.WriteLine($"Position : {outStream.Position}"); //Position 이 프로퍼티로 구현 되어있음... 
 
-            Stream outStream = new FileStream("a.dat", FileMode.Create); //출력스트림 생성
+            outStream.WriteByte(0x01);
+            Console.WriteLine($"Position : {outStream.Position}");
 
-            byte[] wBytes = BitConverter.GetBytes(someValue); //출력스트림에 쓸 버퍼임. 
+            outStream.WriteByte(0x02);
+            Console.WriteLine($"Position : {outStream.Position}");
 
-            Console.Write("{0,-13} : ", "Byte Array");
-            foreach (byte b in wBytes)
-                Console.Write("{0:X2}", b);
-            Console.WriteLine();
+            outStream.WriteByte(0x03);
+            Console.WriteLine($"Position : {outStream.Position}");
 
-            outStream.Write(wBytes, 0, wBytes.Length); 
+            outStream.Seek(5, SeekOrigin.Current);
+            Console.WriteLine($"Position : {outStream.Position}");
+
+            outStream.WriteByte(0x04);
+            Console.WriteLine($"Position : {outStream.Position}");
+
             outStream.Close();
-
-            Stream inStream = new FileStream("a.dat", FileMode.Open);
-            byte[] rbytes = new byte[8];
-
-            int i = 0;
-            while (inStream.Position < inStream.Length)
-                rbytes[i++] = (byte)inStream.ReadByte();
-
-            long readValue = BitConverter.ToInt64(rbytes, 0);
-
-            Console.Write("{0,-13} : 0x{1:X16}", "Read Data",readValue);
         }
     }
 }
