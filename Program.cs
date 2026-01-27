@@ -1,32 +1,44 @@
-﻿using Microsoft.VisualBasic.FileIO;
-using System;
+﻿using System;
 using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Text.Json.Serialization;
 
-namespace TextFile
+
+namespace Serialization
     
 {
     class MainApp
     {
+        [Serializable]
+        class NameCard
+        {
+            public string Name;
+            public string Phone;
+            public int age;
+        }
         static void Main(string[] args)
         {
-            using (StreamWriter sw = new StreamWriter(new FileStream("a.dat", FileMode.Create)))
+            using (Stream ws = new FileStream("a.dat", FileMode.Create))
             {
-                sw.WriteLine(int.MaxValue);
-                sw.WriteLine("Good Morning");
-                sw.WriteLine(uint.MaxValue);
-                sw.WriteLine("안녕하세요!");
-                sw.WriteLine(double.MaxValue);
+                BinaryFormatter serializer = new BinaryFormatter();
+
+                NameCard nc = new NameCard();
+                nc.Name = "대식이";
+                nc.Phone = "010-0000-0000";
+                nc.age = 2000;
+
+                serializer.Serialize(ws, nc);
             }
 
-            using (StreamReader sr = new StreamReader(new FileStream("a.dat", FileMode.Open)))
-            {
-                Console.WriteLine($"File Size : {sr.BaseStream.Length} bytes");
-                while(sr.EndOfStream == false)
-                {
-                    Console.WriteLine(sr.ReadLine());
-                }
-            }
+            using Stream rs = new FileStream("a.dat", FileMode.Open);
+            BinaryFormatter deserializer = new BinaryFormatter();
 
+            NameCard nc2;
+            nc2 = (NameCard)deserializer.Deserialize(rs);
+
+            Console.WriteLine(nc2.Name);
+            Console.WriteLine(nc2.Phone);
+            Console.WriteLine(nc2.age);
         }
     }
 }
