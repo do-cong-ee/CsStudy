@@ -1,32 +1,32 @@
-﻿using System;
+﻿using Microsoft.VisualBasic.FileIO;
+using System;
 using System.IO;
 
-namespace BinaryFile
+namespace TextFile
     
 {
     class MainApp
     {
         static void Main(string[] args)
         {
-            using (BinaryWriter bw = new BinaryWriter(new FileStream("a.dat", FileMode.Create)))
+            using (StreamWriter sw = new StreamWriter(new FileStream("a.dat", FileMode.Create)))
             {
-                bw.Write(int.MaxValue);
-                bw.Write("Good Morning");
-                bw.Write(UInt64.MaxValue);
-                bw.Write("안녕하십니꺼");
-                bw.Write(double.MaxValue);
-            } //bw stream 은 여기서 close 된다. 
+                sw.WriteLine(int.MaxValue);
+                sw.WriteLine("Good Morning");
+                sw.WriteLine(uint.MaxValue);
+                sw.WriteLine("안녕하세요!");
+                sw.WriteLine(double.MaxValue);
+            }
 
-            BinaryReader br = new BinaryReader(new FileStream("a.dat", FileMode.Open));
+            using (StreamReader sr = new StreamReader(new FileStream("a.dat", FileMode.Open)))
+            {
+                Console.WriteLine($"File Size : {sr.BaseStream.Length} bytes");
+                while(sr.EndOfStream == false)
+                {
+                    Console.WriteLine(sr.ReadLine());
+                }
+            }
 
-            Console.WriteLine($"File Size : {br.BaseStream.Length} bytes");
-            Console.WriteLine($"{br.ReadInt32()}");
-            Console.WriteLine($"{br.ReadString()}");
-            Console.WriteLine($"{br.ReadUInt64()}");
-            Console.WriteLine($"{br.ReadString()}");
-            Console.WriteLine($"{br.ReadDouble()}");
-
-            return;
         }
     }
 }
