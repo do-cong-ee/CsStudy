@@ -1,59 +1,37 @@
 ﻿using System;
-using System.Linq;
 using System.IO;
 
-namespace Touch
+namespace BasicIO
 {
     class MainApp
     {
-        static void OnWrongPathType(string type)
-        {
-            Console.WriteLine($"{type} is wrong");
-            return;
-        }
-
         static void Main(string[] args)
         {
-            if(args.Length==0)
-            {
-                Console.WriteLine(
-                    "Useage : Touch.exe <path> [Type:File/Diretory]"
-                    );
-            }
+            long someValue = 0x123456789ABCDEF0;
+            Console.WriteLine("{0,-1} : 0x{1:X16}", "Original Data", someValue); // 원본 데이터 생성...
 
-            string path = args[0];
-            string type = "File";
-            if(args.Length>1)
-            {
-                type = args[1];
-            }
+            Stream outStream = new FileStream("a.dat", FileMode.Create); //출력스트림 생성
 
-            if(File.Exists(path) || Directory.Exists(path))
-            {
-                if (type == "File")
-                    File.SetLastWriteTime(path, DateTime.Now);
-                else if (type == "Directory")
-                    Directory.SetLastWriteTime(path, DateTime.Now);
-                else
-                {
-                    OnWrongPathType(path);
-                    return;
-                }
-                Console.WriteLine($"Updated {path} : {type}");
-            }
-            else
-            {
-                if (type == "File")
-                    File.Create(path).Close();
-                else if (type == "Directory")
-                    Directory.CreateDirectory(path);
-                else
-                {
-                    OnWrongPathType(path);
-                    return;
-                }
-                Console.WriteLine($"Creat {path} : {type}");
-            }
+            byte[] wBytes = BitConverter.GetBytes(someValue); //출력스트림에 쓸 버퍼임. 
+
+            Console.Write("{0,-13} : ", "Byte Array");
+            foreach (byte b in wBytes)
+                Console.Write("{0:X2}", b);
+            Console.WriteLine();
+
+            outStream.Write(wBytes, 0, wBytes.Length); 
+            outStream.Close();
+
+            Stream inStream = new FileStream("a.dat", FileMode.Open);
+            byte[] rbytes = new byte[8];
+
+            int i = 0;
+            while (inStream.Position < inStream.Length)
+                rbytes[i++] = (byte)inStream.ReadByte();
+
+            long readValue = BitConverter.ToInt64(rbytes, 0);
+
+            Console.Write("{0,-13} : 0x{1:X16}", "Read Data",readValue);
         }
     }
 }

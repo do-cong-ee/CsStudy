@@ -1,8 +1,7 @@
 {
   "profiles": {
     "ConsoleApp1": {
-      "commandName": "Project",
-      "commandLineArgs": "C:\\Users\\doconge\\Desktop\\tes1t.dat File"
+      "commandName": "Project"
     }
   }
 }
