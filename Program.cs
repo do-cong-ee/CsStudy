@@ -51,6 +51,7 @@ namespace AbortingThread
 
             Console.WriteLine("Aborting Thread...");
             t1.Abort();
+            //  t1.Abort(); 은 .NET10 에서 사라진기능 실행하고싶다면 .NET9 에서 실행하기
 
             Console.WriteLine("Wating until thread stops...");
             t1.Join();
