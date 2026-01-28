@@ -1,33 +1,58 @@
-﻿using System;
+﻿#pragma warning disable SYSLIB0006
+
+using System;
 using System.Threading;
 
-namespace BasicThreading
+namespace AbortingThread
 {
-    class MainApp
+    class SideTask
     {
-        static void DoSomeThing()
+        int count;
+        public SideTask(int count)
         {
-            for (int i = 0; i < 500; i++)
-            {
-                Console.WriteLine($"DoSomeThing : {i}");
-                //Thread.Sleep(3);
-            }
+            this.count = count;
         }
 
+        public void KeepAlive()
+        {
+            try
+            {
+                while(this.count>0)
+                {
+                    Console.WriteLine($"{count--} left");
+                    Thread.Sleep(10);
+                }
+                Console.WriteLine("Count : 0");
+            }
+            catch(ThreadAbortException e)
+            {
+                Console.WriteLine(e);
+                Thread.ResetAbort();
+            }
+            finally //복습, 예외가 생기든 안생기든 무조껀 실행하는 코드
+            {
+                Console.WriteLine("Clearing resource...");
+            }
+        }
+    }
 
+    class MainApp
+    {
         static void Main(string[] args)
         {
-            Thread t1 = new Thread(new ThreadStart(BasicThreading.MainApp.DoSomeThing));
+            SideTask task = new SideTask(100);
+            Thread t1 = new Thread(new ThreadStart(task.KeepAlive));
+            t1.IsBackground = false;
+
             Console.WriteLine("Starting Thread...");
             t1.Start();
 
-            for (int i = 0; i < 500; i++)
-            {
-                Console.WriteLine($"Main : {i}");
-                //Thread.Sleep(2);
-            }
+            Thread.Sleep(100);
 
-            Console.WriteLine("Waiting Until Thread Stop.....");
+            Console.WriteLine("Aborting Thread...");
+            t1.Abort();
+
+            Console.WriteLine("Wating until thread stops...");
             t1.Join();
 
             Console.WriteLine("Finished");
