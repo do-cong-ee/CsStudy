@@ -1,28 +1,21 @@
 ﻿using System;
+using System.Security.Permissions;
 using System.Threading;
 
-namespace UsingThreadState
+namespace InterruptingThread
 {
-    class MainApp
+    class SideTask
     {
-        private static void PrintThreadState(ThreadState state)
+        int count;
+
+        public SideTask (int count)
         {
-            Console.WriteLine("{0,-16} : {1}", state, (int)state);
+            this.count = count;
         }
 
-        static void Main(string[] args)
+        public void KeepAlive()
         {
-            PrintThreadState(ThreadState.Running);
-            PrintThreadState(ThreadState.StopRequested);
-            PrintThreadState(ThreadState.SuspendRequested);
-            PrintThreadState(ThreadState.Background);
-            PrintThreadState(ThreadState.Unstarted);
-            PrintThreadState(ThreadState.Stopped);
-            PrintThreadState(ThreadState.WaitSleepJoin);
-            PrintThreadState(ThreadState.Suspended);
-            PrintThreadState(ThreadState.AbortRequested);
-            PrintThreadState(ThreadState.Aborted);
-            PrintThreadState(ThreadState.Aborted | ThreadState.Stopped);
+
         }
     }
 }
