@@ -6,7 +6,10 @@ namespace Synchronize
     class Counter
     {
         const int LOOP_COUNT = 1000;
+
         readonly object thislock; // 모니터에서도 이거 씀.. 
+        bool lockedCount = false;
+        
         private int count;
 
         public int Count
