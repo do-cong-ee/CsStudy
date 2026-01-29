@@ -28,16 +28,17 @@ namespace Synchronize
             int loopCount = LOOP_COUNT;
             while (loopCount-- > 0)
             {
-                Monitor.Enter(thislock);
-                try
+                lock(thislock)
                 {
+                    while (count > 0 || lockedCount == true)
+                        Monitor.Wait(thislock);
+
+                    lockedCount = true;
                     count++;
+                    lockedCount = false;
+
+                    Monitor.Pulse(thislock);
                 }
-                finally
-                {
-                    Monitor.Exit(thislock);
-                }
-                Thread.Sleep(1);
             }
         }
 
@@ -46,18 +47,18 @@ namespace Synchronize
             int loopCount = LOOP_COUNT;
             while (loopCount-- > 0)
             {
-                Monitor.Enter(thislock);
-                try
+                lock (thislock)
                 {
+                    while (count < 0 || lockedCount == true)
+                        Monitor.Wait(thislock);
+
+                    lockedCount = true;
                     count--;
+                    lockedCount = false;
+
+                    Monitor.Pulse(thislock);
                 }
-                finally
-                {
-                    Monitor.Exit(thislock);
-                }
-                Thread.Sleep(1);
             }
-        }
     }
     class MainApp
     {
