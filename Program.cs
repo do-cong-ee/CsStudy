@@ -1,81 +1,36 @@
 ﻿using System;
+using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 
-namespace Synchronize
+namespace UsingTask
 {
-    class Counter
-    {
-        const int LOOP_COUNT = 1000;
-
-        readonly object thislock; // 모니터에서도 이거 씀.. 
-        bool lockedCount = false;
-        
-        private int count;
-
-        public int Count
-        {
-            get { return count; }
-        }
-
-        public Counter()
-        {
-            thislock = new object();
-            count = 0;
-        }
-
-        public void Increase()
-        {
-            int loopCount = LOOP_COUNT;
-            while (loopCount-- > 0)
-            {
-                lock(thislock)
-                {
-                    while (count > 0 || lockedCount == true)
-                        Monitor.Wait(thislock);
-
-                    lockedCount = true;
-                    count++;
-                    lockedCount = false;
-
-                    Monitor.Pulse(thislock);
-                }
-            }
-        }
-
-        public void Decrease()
-        {
-            int loopCount = LOOP_COUNT;
-            while (loopCount-- > 0)
-            {
-                lock (thislock)
-                {
-                    while (count < 0 || lockedCount == true)
-                        Monitor.Wait(thislock);
-
-                    lockedCount = true;
-                    count--;
-                    lockedCount = false;
-
-                    Monitor.Pulse(thislock);
-                }
-            }
-    }
     class MainApp
     {
         static void Main(string[] args)
         {
-            Counter counter = new Counter();
+            string srcFile = args[0];
 
-            Thread incThread = new Thread(new ThreadStart(counter.Increase));
-            Thread decThread = new Thread(new ThreadStart(counter.Decrease));
+            Action<object> FileCopyAction = (object state) =>
+            {
+                string[] paths = (string[])state;
+                File.Copy(paths[0], paths[1]);
 
-            incThread.Start();
-            decThread.Start();
+                Console.WriteLine("TaskId : {0}, Thread : {1}, {2} was copied to {3}",
+                    Task.CurrentId, Thread.CurrentThread.ManagedThreadId, paths[0], paths[1]);
+            };
 
-            incThread.Join();
-            decThread.Join();
+            Task t1 = new Task(FileCopyAction, new string[] { srcFile, srcFile + ".copy1" });
 
-            Console.WriteLine(counter.Count);
+            Task t2 = Task.Run(() =>
+            {
+                FileCopyAction(new string[] { srcFile, srcFile + ".copy2" });
+            }); // Task.Run 함수의 인자로 함수를 줘야해...
+
+            Task t3 = new Task(FileCopyAction, new string[] { srcFile, srcFile + ".copy1" });
+{
+
+            };
         }
     }
 }
