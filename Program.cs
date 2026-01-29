@@ -27,10 +27,18 @@ namespace UsingTask
                 FileCopyAction(new string[] { srcFile, srcFile + ".copy2" });
             }); // Task.Run 함수의 인자로 함수를 줘야해...
 
+            t1.Start();
+            
             Task t3 = new Task(FileCopyAction, new string[] { srcFile, srcFile + ".copy1" });
-{
-
+            {
+                new Task(FileCopyAction, new string[] { srcFile, srcFile + ".copy1" });
             };
+
+            t3.RunSynchronously();
+
+            t1.Wait();
+            t2.Wait();
+            t3.Wait();
         }
     }
 }
