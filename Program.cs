@@ -1,41 +1,63 @@
 ﻿using System;
-using System.IO;
-using System.Threading;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace UsingTask
+namespace TaskResult
 {
     class MainApp
-    {
+    {   
+        static bool IsPrime(long number) //소수를 찿는 함수
+        {
+            if (number < 2)
+                return false;
+
+            if (number % 2 == 0 && number != 2)
+                return false;
+
+            for(long i =0;i<number;i++)
+            {
+                if (number % i == 0)
+                    return false;
+            }
+
+            return true;
+        }
+
         static void Main(string[] args)
         {
-            string srcFile = args[0];
+            long from = Convert.ToInt64(args[0]);
+            long to = Convert.ToInt64(args[1]);
+            int taskCount = Convert.ToInt32(args[2]);
 
-            Action<object> FileCopyAction = (object state) =>
+            Func<object, List<long>> FindPrimeFunc = (objRange) =>
             {
-                string[] paths = (string[])state;
-                File.Copy(paths[0], paths[1],true);
+                long[] range = (long[])objRange;
+                List<long> found = new List<long>();
 
-                Console.WriteLine("TaskId : {0}, Thread : {1}, {2} was copied to {3}",
-                    Task.CurrentId, Thread.CurrentThread.ManagedThreadId, paths[0], paths[1]);
-            };
+                for(long i = range[0]; i < range[1];i++)
+                {
+                    if (IsPrime(i))
+                        found.Add(i);
+                }
 
-            Task t1 = new Task(FileCopyAction, new string[] { srcFile, srcFile + ".copy1" });
+                return found;
+            }; //대리자를 이용한 무명함수 
 
-            Task t2 = Task.Run(() =>
+
+            //Task<List<long>> tasks = new Task<List<long>>();
+            // Task(함수,함수의 인자) 를!
+
+            Task<List<long>>[] tasks = new Task<List<long>>[taskCount];
+            long currentFrom = from;
+            long currentTo = to / taskCount;
+
+            for(int i=0;i<taskCount;i++)
             {
-                FileCopyAction(new string[] { srcFile, srcFile + ".copy2" });
-            }); // Task.Run 함수의 인자로 함수를 줘야해...
+                Console.WriteLine("Task[{0}] : {1} ~ {2}", i, currentFrom, currentTo);
+                tasks[i] = new Task<List<long>>(FindPrimeFunc, new long[]{ currentFrom, currentTo });
+                
+            }
 
-            t1.Start();
-            
-            Task t3 = new Task(FileCopyAction, new string[] { srcFile, srcFile + ".copy3" });
-          
-            t3.RunSynchronously();
-
-            t1.Wait();
-            t2.Wait();
-            t3.Wait();
         }
     }
 }
