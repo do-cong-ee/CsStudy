@@ -14,7 +14,7 @@ namespace TaskResult
             if (number % 2 == 0 && number != 2)
                 return false;
 
-            for(long i =0;i<number;i++)
+            for(long i = 2;i<number;i++)
             {
                 if (number % i == 0)
                     return false;
@@ -55,9 +55,43 @@ namespace TaskResult
             {
                 Console.WriteLine("Task[{0}] : {1} ~ {2}", i, currentFrom, currentTo);
                 tasks[i] = new Task<List<long>>(FindPrimeFunc, new long[]{ currentFrom, currentTo });
-                
+
+                currentFrom = currentTo + 1;
+                if (i == tasks.Length - 2)
+                    currentTo = to;
+                else
+                    currentTo += (to / tasks.Length);
             }
 
+            Console.WriteLine("Please press enter to start");
+            Console.ReadLine();
+            Console.WriteLine("Start");
+
+            DateTime startTime = DateTime.Now;
+
+            foreach(Task<List<long>> task in tasks)
+            {
+                task.Start();
+            }
+
+            List<long> total = new List<long>();
+
+            foreach (Task<List<long>> task in tasks)
+            {
+                task.Wait();
+                total.AddRange(task.Result.ToArray());
+            }
+
+            DateTime endTime = DateTime.Now;
+
+            TimeSpan elapsed = endTime - startTime;
+
+            Console.WriteLine("Prime number count between {0} and {1} : {2}", from, to, total.Count);
+
+            Console.WriteLine("Elapsed time = {0}", elapsed);
+
+
+            return;
         }
     }
 }

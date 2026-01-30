@@ -2,7 +2,7 @@
   "profiles": {
     "ConsoleApp1": {
       "commandName": "Project",
-      "commandLineArgs": "\"C:\\Users\\doconge\\Desktop\\task\\test.txt\""
+      "commandLineArgs": "1 1000000 8"
     }
   }
 }
