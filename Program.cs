@@ -3,106 +3,44 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace TaskResult
+namespace Async
 {
     class MainApp
-    {   
-        static bool IsPrime(long number) //소수를 찿는 함수
+    {
+        async static private void MyMethodAsync(int count)
         {
-            if (number < 2)
-                return false;
+            Console.WriteLine("C"); //3
+            Console.WriteLine("D"); //4
 
-            if (number % 2 == 0 && number != 2)
-                return false;
-
-            for(long i = 2;i<number;i++)
+            await Task.Run(async () =>
             {
-                if (number % i == 0)
-                    return false;
-            }
+                for(int i=1;i<=count;i++)
+                {
+                    Console.WriteLine($"{i}/{count}...");
+                    await Task.Delay(700);
+                }
+            });
 
-            return true;
+            Console.WriteLine("G");
+            Console.WriteLine("H");
         }
+
+        static void Caller()
+        {
+            Console.WriteLine("A"); //1
+            Console.WriteLine("B"); //2
+
+            MyMethodAsync(3);
+
+            Console.WriteLine("E"); //5
+            Console.WriteLine("F"); //6
+        }
+
 
         static void Main(string[] args)
         {
-            long from = Convert.ToInt64(args[0]);
-            long to = Convert.ToInt64(args[1]);
-            
-            //int taskCount = Convert.ToInt32(args[2]);
-            /*
-            Func<object, List<long>> FindPrimeFunc = (objRange) =>
-            {
-                long[] range = (long[])objRange;
-                List<long> found = new List<long>();
-
-                for(long i = range[0]; i < range[1];i++)
-                {
-                    if (IsPrime(i))
-                        found.Add(i);
-                }
-
-                return found;
-            }; //대리자를 이용한 무명함수 
-
-
-            //Task<List<long>> tasks = new Task<List<long>>();
-            // Task(함수,함수의 인자) 를!
-
-            Task<List<long>>[] tasks = new Task<List<long>>[taskCount];
-            long currentFrom = from;
-            long currentTo = to / taskCount;
-
-            for(int i=0;i<taskCount;i++)
-            {
-                Console.WriteLine("Task[{0}] : {1} ~ {2}", i, currentFrom, currentTo);
-                tasks[i] = new Task<List<long>>(FindPrimeFunc, new long[]{ currentFrom, currentTo });
-
-                currentFrom = currentTo + 1;
-                if (i == tasks.Length - 2)
-                    currentTo = to;
-                else
-                    currentTo += (to / tasks.Length);
-            }
-            */
-            Console.WriteLine("Please press enter to start");
+            Caller();
             Console.ReadLine();
-            Console.WriteLine("Start");
-
-            DateTime startTime = DateTime.Now;
-            List<long> total = new List<long>();
-            /*
-            foreach(Task<List<long>> task in tasks)
-            {
-                task.Start();
-            }
-
-            
-
-            foreach (Task<List<long>> task in tasks)
-            {
-                task.Wait();
-                total.AddRange(task.Result.ToArray());
-            }
-            */
-
-            Parallel.For(from,to, (long i) =>
-                {
-                if (IsPrime(i))
-                    lock (total)
-                        total.Add(i);
-
-                });
-            DateTime endTime = DateTime.Now;
-
-            TimeSpan elapsed = endTime - startTime;
-
-            Console.WriteLine("Prime number count between {0} and {1} : {2}", from, to, total.Count);
-
-            Console.WriteLine("Elapsed time = {0}", elapsed);
-
-
-            return;
         }
     }
 }
