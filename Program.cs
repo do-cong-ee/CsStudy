@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace TaskResult
@@ -27,8 +28,9 @@ namespace TaskResult
         {
             long from = Convert.ToInt64(args[0]);
             long to = Convert.ToInt64(args[1]);
-            int taskCount = Convert.ToInt32(args[2]);
-
+            
+            //int taskCount = Convert.ToInt32(args[2]);
+            /*
             Func<object, List<long>> FindPrimeFunc = (objRange) =>
             {
                 long[] range = (long[])objRange;
@@ -62,26 +64,35 @@ namespace TaskResult
                 else
                     currentTo += (to / tasks.Length);
             }
-
+            */
             Console.WriteLine("Please press enter to start");
             Console.ReadLine();
             Console.WriteLine("Start");
 
             DateTime startTime = DateTime.Now;
-
+            List<long> total = new List<long>();
+            /*
             foreach(Task<List<long>> task in tasks)
             {
                 task.Start();
             }
 
-            List<long> total = new List<long>();
+            
 
             foreach (Task<List<long>> task in tasks)
             {
                 task.Wait();
                 total.AddRange(task.Result.ToArray());
             }
+            */
 
+            Parallel.For(from,to, (long i) =>
+                {
+                if (IsPrime(i))
+                    lock (total)
+                        total.Add(i);
+
+                });
             DateTime endTime = DateTime.Now;
 
             TimeSpan elapsed = endTime - startTime;
