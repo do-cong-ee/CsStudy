@@ -1,31 +1,48 @@
-﻿using System;
+﻿using Microsoft.VisualBasic.Devices;
+using System;
 using System.Windows.Forms;
 
-namespace FormEvent
+namespace FormSize
 {
     class MainApp : Form
     {
-        public void MyMouseHandler(object sender , MouseEventArgs e)
-        {
-            //sender 어떤 객체가 이벤트 처리기를 호출 하였는지 -> Button? 
-            // e -> 이벤트처리기. 
-            Console.WriteLine($"Sender : {((Form)sender).Text}");
-            Console.WriteLine($"X : {e.X}, y:{e.Y}");
-            Console.WriteLine($"Button : {e.Button}, Click : {e.Clicks}");
-        }
-
-        public MainApp (string title)
-        {
-            this.Text = title;
-            this.MouseDown += new MouseEventHandler(MyMouseHandler);
-        }
-        
         static void Main(string[] args)
         {
-            Application.Run(new MainApp("Mouse Event Test"));
+            MainApp form = new MainApp();
+            form.Width = 300;
+            form.Height = 200;
+
+            form.MouseDown += new MouseEventHandler(form_MouseDown);
+
+            Application.Run(form);
         }
 
-    }
 
-    
+        static void form_MouseDown(object sender, MouseEventArgs e)
+        {
+            Form form = (Form)sender;
+            int oldWidth = form.Width;
+            int oldHeight = form.Height;
+
+            if(e.Button == MouseButtons.Left)
+            {
+                if(oldWidth<oldHeight)
+                {
+                    form.Width = oldHeight;
+                    form.Height = oldWidth;
+                }
+            }
+            else if(e.Button == MouseButtons.Right)
+            {
+                if (oldWidth > oldHeight)
+                {
+                    form.Width = oldHeight;
+                    form.Height = oldWidth;
+                }
+            }
+
+            Console.WriteLine("윈도우의 크기가 변경 되었읍니다");
+            Console.WriteLine($"Width {form.Width}, Height: {form.Height}");
+        }
+    }
 }
