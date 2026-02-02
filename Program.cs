@@ -1,12 +1,24 @@
 ﻿using System;
+using System.Windows.Forms;
 
 namespace SimpleWindow
 {
-    class MainApp : System.Windows.Forms.Form
+    class MainApp : Form
     {
         static void Main(string[] args)
         {
-            System.Windows.Forms.Application.Run(new MainApp());
+            MainApp form = new MainApp();
+
+            form.Click += new EventHandler(
+                (sender,eventArgs)=>{
+                    Console.WriteLine("Closing Window....");
+                    Application.Exit();
+                });
+            Console.WriteLine("Starting Window Application....");
+
+            Application.Run(form);
+
+            Console.WriteLine("Exiting window application...");
         }
     }
 }
