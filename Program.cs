@@ -1,24 +1,31 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace SimpleWindow
+namespace MessageFilter
 {
+    class MassageFilter : IMessageFilter
+    {
+        public bool PreFilterMessage(ref Message m)
+        {
+            if (m.Msg == 0x0F || m.Msg == 0xA0 || m.Msg == 0x200 || m.Msg == 0x113)
+            {
+               return false;
+            }
+            Console.WriteLine($"{m.ToString()} : {m.Msg}");
+
+            if (m.Msg == 0x201)
+                Application.Exit();
+
+            return true;
+        }
+    }
+
     class MainApp : Form
     {
         static void Main(string[] args)
         {
-            MainApp form = new MainApp();
-
-            form.Click += new EventHandler(
-                (sender,eventArgs)=>{
-                    Console.WriteLine("Closing Window....");
-                    Application.Exit();
-                });
-            Console.WriteLine("Starting Window Application....");
-
-            Application.Run(form);
-
-            Console.WriteLine("Exiting window application...");
+            Application.AddMessageFilter(new MessageFilter.MassageFilter());
+            Application.Run(new MainApp());
         }
     }
 }
