@@ -1,46 +1,41 @@
 ﻿using System;
 
-namespace Event
+namespace EventTest
 {
-    class MyTimer
+    delegate void EventHandler(string message);
+
+    class MyNotifier
     {
-        public delegate void Tick(DateTime now);
-        public event Tick Ticked;
-        private int interval;
-
-        public MyTimer(int interval)
+        public event EventHandler SomethingHappened;
+        public void DoSomething(int number)
         {
-            this.interval = interval;
-        }
+            int temp = number % 10;
 
-        public void start()
-        {
-            DateTime before = DateTime.Now;
-            while (true)
+            if (temp != 0 && temp % 3 == 0)
             {
-                DateTime current = DateTime.Now;
-
-                if (before.AddSeconds(interval) < current)
-                {
-                    Ticked(current);
-                    before = current;
-                }
+                SomethingHappened(String.Format("{0} : 짝", number));
             }
         }
     }
 
     class MainApp
     {
-        static void TimeEllapsed(DateTime current)
+        static public void MyHandler(string message)
         {
-            Console.WriteLine("Time Ellapsed : {0}", current.ToLongTimeString());
+            Console.WriteLine(message);
         }
+
         static void Main(string[] args)
         {
-            MyTimer timer = new MyTimer(5);
-            timer.Ticked += new MyTimer.Tick(TimeEllapsed);
+            MyNotifier notifier = new MyNotifier();
+            notifier.SomethingHappened += new EventHandler(MyHandler);
 
-            timer.start();
+            for (int i = 1; i < 30; i++)
+            {
+                notifier.DoSomething(i);
+            }
         }
     }
+}
+
 }
