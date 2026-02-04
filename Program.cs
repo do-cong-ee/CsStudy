@@ -20,7 +20,7 @@ namespace EventTest
 
     class MainApp
     {
-        static public void MyHandler(string message)
+        static public void MyHandler(string message) // 이벤트가 발생하면 처리해야할 함수
         {
             Console.WriteLine(message);
         }
@@ -28,7 +28,7 @@ namespace EventTest
         static void Main(string[] args)
         {
             MyNotifier notifier = new MyNotifier();
-            notifier.SomethingHappened += new EventHandler(MyHandler);
+            notifier.SomethingHappened += new EventHandler(MyHandler); //이벤트가 발생하면 호출되는 대리자에, 이벤트 처리함수를 붙여... 
 
             for (int i = 1; i < 30; i++)
             {
